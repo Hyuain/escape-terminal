@@ -1,8 +1,12 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export const App = defineComponent({
   setup() {
-    return () => (<div>Hello!</div>)
+    const count = ref(0)
+    const onClick = () => {
+      count.value ++
+    }
+    return () => (<div onClick={onClick}>{count.value}</div>)
   }
 })
 
