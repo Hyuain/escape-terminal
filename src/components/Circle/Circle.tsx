@@ -8,8 +8,13 @@ export const Circle = defineComponent({
       type: Number,
     },
   },
+  emits: ['click'],
   setup(props, context) {
-    return () => <div class={s.circle} style={{ width: `${props.size}px`, height: `${props.size}px` }}>
+    return () => <div
+      onClick={() => context.emit('click')}
+      class={s.circle}
+      style={{ width: `${props.size}px`, height: `${props.size}px` }}
+    >
       {context.slots.default?.()}
     </div>
   }

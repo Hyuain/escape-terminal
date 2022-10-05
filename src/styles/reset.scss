@@ -15,4 +15,7 @@ a {
 
 button, input {
   font: inherit;
+  &:focus {
+    outline: none;
+  }
 }

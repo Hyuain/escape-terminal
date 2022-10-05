@@ -1,14 +1,9 @@
 .welcome {
-  margin-top: 30vh;
-  margin-bottom: 6vh;
+  margin-top: 48px;
+  margin-bottom: 20px;
   font-size: 40px;
   font-weight: 700;
   text-align: center;
-}
-
-.input {
-  margin: 24px 48px 0 48px;
-  font-size: 20px;
 }
 
 .button {
@@ -16,7 +11,7 @@
 }
 
 .bottom {
-  height: 100%;
+  margin-top: 48px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -24,4 +19,3 @@
     margin-bottom: 2vh;
   }
 }
-

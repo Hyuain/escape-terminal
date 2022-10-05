@@ -3,9 +3,10 @@ import { Circle } from '../Circle/Circle'
 import s from './NextButton.module.scss'
 
 export const NextButton = defineComponent({
-  setup(props) {
+  emits: ['click'],
+  setup(props, context) {
     return () => <div class={s.buttonWrapper}>
-      <Circle class={s.button} size={64}>
+      <Circle onClick={() => context.emit('click')} class={s.button} size={80}>
       go!
       </Circle>
     </div>

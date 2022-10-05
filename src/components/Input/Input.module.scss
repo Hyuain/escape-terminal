@@ -1,13 +1,19 @@
 @import "../../styles/variables";
 
 .input-wrapper {
+  &.theme-welcome {
+    margin: 24px 48px 0 48px;
+    font-size: 20px;
+  }
   border: 2px solid $color-disabled;
   border-radius: 2em;
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: .4em .8em;
+  padding: .4em .7em;
   transition: all .3s;
+  height: 2.8em;
+  flex-shrink: 0;
   .input {
     width: 100%;
     border: none;
