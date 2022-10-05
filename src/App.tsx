@@ -1,12 +1,12 @@
 import { defineComponent, ref } from 'vue'
+import { SignIn } from './view/SignIn/SignIn'
+import './App.scss'
 
 export const App = defineComponent({
   setup() {
-    const count = ref(0)
-    const onClick = () => {
-      count.value ++
-    }
-    return () => (<div onClick={onClick}>{count.value}</div>)
+    return () => <>
+      <router-view></router-view>
+    </>
   }
 })
 

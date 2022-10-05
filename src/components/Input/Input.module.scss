@@ -1,0 +1,30 @@
+@import "../../styles/variables";
+
+.input-wrapper {
+  border: 2px solid $color-disabled;
+  border-radius: 2em;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: .4em .8em;
+  transition: all .3s;
+  .input {
+    width: 100%;
+    border: none;
+    outline: none;
+  }
+  &:focus-within {
+    border: 2px solid $color-primary;
+  }
+  &.error-input {
+    border: 2px solid $color-error;
+  }
+  .suffix {
+
+  }
+}
+.error {
+  margin-left: .8em;
+  color: $color-error;
+  font-size: .8em;
+}
