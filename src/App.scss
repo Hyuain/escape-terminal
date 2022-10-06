@@ -1,1 +1,10 @@
 @import "styles/reset";
+@font-face {
+  font-family: "Geo";
+  src: url("/fonts/Geo-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Geo";
+  src: url("/fonts/Geo-Italic.ttf") format("truetype");
+  font-style: italic;
+}

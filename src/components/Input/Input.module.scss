@@ -2,25 +2,34 @@
 
 .input-wrapper {
   &.theme-welcome {
-    margin: 24px 48px 0 48px;
-    font-size: 20px;
+    margin: 24px 36px 0 36px;
+    font-size: 24px;
   }
+  height: 70px;
+  left: 34px;
+  top: 191px;
+  background: rgba(255, 255, 255, 0.53);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), inset 0 0 0 rgb(0, 0, 0);
+  border-radius: 25px;
   border: 2px solid $color-disabled;
-  border-radius: 2em;
   overflow: hidden;
   display: flex;
   align-items: center;
   padding: .4em .7em;
   transition: all .3s;
-  height: 2.8em;
   flex-shrink: 0;
   .input {
     width: 100%;
     border: none;
     outline: none;
+    background: none;
+    &::placeholder {
+      color: #4A4A4A;
+    }
   }
   &:focus-within {
-    border: 2px solid $color-primary;
+    transition: all .3s;
+    box-shadow: 0 0 0 rgb(0, 0, 0, 0), inset 0 4px 4px rgba(0, 0, 0, 0.25);
   }
   &.error-input {
     border: 2px solid $color-error;

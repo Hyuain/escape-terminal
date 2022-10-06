@@ -1,9 +1,27 @@
+.page-wrapper {
+  background-image: url('/signin_bg.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+  font-family: Geo, sans-serif;
+}
+
+.input-group {
+  margin-top: 240px;
+}
+
+.link {
+  height: 40px;
+  margin-top: 140px;
+}
+
 .welcome {
-  margin-top: 48px;
+  margin-top: 146px;
   margin-bottom: 20px;
-  font-size: 40px;
   font-weight: 700;
   text-align: center;
+  font-size: 96px;
+  line-height: 107px;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .button {
