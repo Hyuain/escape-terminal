@@ -1,0 +1,26 @@
+.card-wrapper {
+  border: 1px solid black;
+  border-radius: 16px;
+  display: flex;
+  .left {
+    flex-grow: 1;
+    padding-left: 12px;
+    .time {
+      font-size: 32px;
+      font-weight: 700;
+    }
+  }
+  .right {
+    flex-shrink: 0;
+    padding-right: 12px;
+    .weather {
+      display: flex;
+      .description {
+
+      }
+      .temperature {
+        margin-left: 8px;
+      }
+    }
+  }
+}
