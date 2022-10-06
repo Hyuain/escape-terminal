@@ -21,6 +21,7 @@ const getWeather = (longitude: number, latitude: number): Promise<IWeatherbitRes
       'X-RapidAPI-Host': RapidAPI.weatherbit.host,
     },
   }
+  // const options = {}
   return fetch(`https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=${longitude}&lat=${latitude}`, options)
     .then(response => response.json())
 }

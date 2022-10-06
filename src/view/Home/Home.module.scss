@@ -1,3 +1,15 @@
 .weather-card {
   margin: 32px 48px;
 }
+.apps-container {
+  margin: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .app {
+    margin: 8px 16px;
+  }
+  .widget-100 {
+    margin: 8px 16px;
+  }
+}

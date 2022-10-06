@@ -1,0 +1,23 @@
+.card-wrapper {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  .description {
+
+  }
+  .recommendation {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    position: relative;
+    .roll {
+      font-size: 14px;
+      position: absolute;
+      right: 20px;
+      bottom: 0;
+    }
+  }
+}

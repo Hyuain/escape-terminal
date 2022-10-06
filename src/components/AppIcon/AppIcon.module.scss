@@ -1,0 +1,14 @@
+.icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .icon {
+    width: 64px;
+    height: 64px;
+    border: 1px solid black;
+    border-radius: 16px;
+  }
+  .name {
+
+  }
+}
