@@ -1,6 +1,5 @@
 import { defineComponent, ref } from 'vue'
 import { Input } from '../../components/Input/Input'
-import { NextButton } from '../../components/NextButton/NextButton'
 import { PageWrapper } from '../../components/PageWrapper/PageWrapper'
 import { InputTheme } from '../../components/Input/Input.interface'
 import { useRouter } from 'vue-router'
@@ -51,10 +50,6 @@ export const SignIn = defineComponent({
       },
       [WelcomeStep.SET_PASSWORD]: {
         child: () => <>
-          <Input
-            theme={InputTheme.WELCOME}
-            inputProps={{ placeholder: 'Email' }}
-          />
           <Input theme={InputTheme.WELCOME} inputProps={{ placeholder: 'Authentication Code', type: 'password' }}/>
           <Input theme={InputTheme.WELCOME} inputProps={{ placeholder: 'Confirm Authentication Code', type: 'password' }}/>
         </>,

@@ -1,0 +1,21 @@
+.bubble-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  &.me {
+    flex-direction: row-reverse;
+  }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border: 1px solid black;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .bubble {
+    border: 1px solid black;
+    border-radius: 8px;
+    max-width: 60%;
+    padding: 4px 8px;
+  }
+}

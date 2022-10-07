@@ -1,0 +1,22 @@
+.textarea-wrapper {
+  border: 1px solid black;
+  display: flex;
+  overflow: visible;
+  flex-grow: 1;
+  padding: 4px 8px;
+  align-items: center;
+  justify-content: space-between;
+  .textarea {
+    height: 100%;
+    flex-grow: 1;
+    border: 1px solid black;
+    padding: 4px 8px;
+    max-height: calc(4em);
+    resize: none;
+    outline: none;
+    overflow: scroll;
+  }
+  .send {
+    border: 1px solid red;
+  }
+}
