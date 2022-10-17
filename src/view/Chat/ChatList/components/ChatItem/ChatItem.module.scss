@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  .avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border: 1px dashed black;
+    position: relative;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border: 1px solid black;
+      border-radius: 8px;
+    }
+    .badge {
+      position: absolute;
+      border-radius: 9px;
+      height: 18px;
+      min-width: 18px;
+      padding: 2px 4px;
+      background-color: red;
+      color: white;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .content {
+    margin-left: 10px ;
+  }
+}
