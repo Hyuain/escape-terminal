@@ -6,24 +6,54 @@ import { useRouter } from 'vue-router'
 import s from './SignIn.module.scss'
 import { WelcomeStep } from './SignIn.interface'
 import { ValidationCode } from '../../components/ValidationCode/ValidationCode'
+import axios from 'axios'
 
 const VALIDATION_CODE_DIGITS = 4
 
 export const SignIn = defineComponent({
   setup(props) {
     const errorMsgRef = ref('')
-    const stepRef = ref(WelcomeStep.VALIDATION)
+    const stepRef = ref(WelcomeStep.ENTER_EMAIL)
+    const formRef = ref({
+      email: '',
+      validationCode: '',
+    })
 
     const router = useRouter()
 
     const handleClickNext = () => {
-      router.replace('/home')
+      if (stepRef.value === WelcomeStep.ENTER_EMAIL) {
+        sendVerificationCode()
+      } else if (stepRef.value === WelcomeStep.VALIDATION) {
+        signIn()
+      }
+      // router.replace('/home')
     }
 
     const handleInputValidationCode = (validationCodeArray: string[]) => {
       const validationCode = validationCodeArray.join('')
+      formRef.value.validationCode = validationCode
       if (validationCode.length < VALIDATION_CODE_DIGITS) { return }
-      stepRef.value = WelcomeStep.SET_PASSWORD
+      signIn()
+    }
+
+    const handleInputEmail = (e: any) => {
+      formRef.value.email = e.target!.value
+    }
+
+    const sendVerificationCode = () => {
+      axios.post('/api/v1/validation_codes', {
+        email: formRef.value.email,
+      }).then(() => {
+        stepRef.value = WelcomeStep.VALIDATION
+      })
+    }
+
+    const signIn = () => {
+      axios.post('/api/v1/sessions', {
+        email: formRef.value.email,
+        code: formRef.value.validationCode,
+      }).then()
     }
 
     const CONTENT_MAP = {
@@ -31,7 +61,7 @@ export const SignIn = defineComponent({
         child: () => <>
           <Input
             theme={InputTheme.WELCOME}
-            inputProps={{ placeholder: 'Email' }}
+            inputProps={{ placeholder: 'Email', onInput: handleInputEmail}}
           />
         </>,
       },
