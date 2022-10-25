@@ -13,5 +13,5 @@ export const routes: RouteRecordRaw[] = [
       { path: 'list', component: ChatList },
     ]
   },
-  { path: '/', component: SignIn }
+  { path: '/', component: Home }
 ]

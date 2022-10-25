@@ -1,9 +1,5 @@
-import { defineComponent, ref } from 'vue'
-import { SignIn } from './view/SignIn/SignIn'
+import { defineComponent } from 'vue'
 import './App.scss'
-import axios from 'axios'
-
-axios.defaults.baseURL = 'http://localhost:3000'
 
 export const App = defineComponent({
   setup() {

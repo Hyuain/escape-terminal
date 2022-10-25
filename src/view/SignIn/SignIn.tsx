@@ -7,19 +7,21 @@ import s from './SignIn.module.scss'
 import { WelcomeStep } from './SignIn.interface'
 import { ValidationCode } from '../../components/ValidationCode/ValidationCode'
 import axios from 'axios'
+import { useUserStore } from '../../stores/user'
 
 const VALIDATION_CODE_DIGITS = 4
 
 export const SignIn = defineComponent({
   setup(props) {
     const errorMsgRef = ref('')
+    const userStore = useUserStore()
+    const router = useRouter()
+
     const stepRef = ref(WelcomeStep.ENTER_EMAIL)
     const formRef = ref({
       email: '',
       validationCode: '',
     })
-
-    const router = useRouter()
 
     const handleClickNext = () => {
       if (stepRef.value === WelcomeStep.ENTER_EMAIL) {
@@ -27,7 +29,6 @@ export const SignIn = defineComponent({
       } else if (stepRef.value === WelcomeStep.VALIDATION) {
         signIn()
       }
-      // router.replace('/home')
     }
 
     const handleInputValidationCode = (validationCodeArray: string[]) => {
@@ -53,7 +54,11 @@ export const SignIn = defineComponent({
       axios.post('/api/v1/sessions', {
         email: formRef.value.email,
         code: formRef.value.validationCode,
-      }).then()
+      }).then((res) => {
+        const jwt = res.data.jwt
+        localStorage.setItem('jwt', jwt)
+        router.replace('/home')
+      })
     }
 
     const CONTENT_MAP = {
