@@ -1,15 +1,25 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import s from './Bubble.module.scss'
+import { ChatDirection, ChatType, IChat } from '../../../Chat.interface'
 
 export const Bubble = defineComponent({
-  setup() {
-    return () => <div class={{ [`${s.bubbleWrapper}`]: true, [`${s.me}`]: Math.random() > .5 }}>
+  props: {
+    message: Object as PropType<IChat>,
+  },
+  setup(props) {
+
+    return () => <div
+      class={{ [`${s.bubbleWrapper}`]: true, [`${s.me}`]: props.message!.direction === ChatDirection.FROM_USER }}>
       <div class={s.avatar}>
 
       </div>
       <div class={s.bubble}>
-        {new Array(Math.round(Math.random() * 100)).fill('哈').join('')}
+        {
+          props.message!.content.type === ChatType.TEXT
+            ? props.message!.content.resource.text
+            : null
+        }
       </div>
     </div>
-  }
+  },
 })

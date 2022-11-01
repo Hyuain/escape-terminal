@@ -3,7 +3,7 @@ import s from './AppIcon.module.scss'
 
 export const AppIcon = defineComponent({
   props: {
-    'name': String,
+    name: String,
   },
   emits: ['click'],
   setup(props, context) {

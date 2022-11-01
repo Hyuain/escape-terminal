@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { hostConfig } from './host.config'
 
 const skipAuthorizationUrls = new Set([
   '/api/v1/validation_codes',
@@ -7,7 +8,7 @@ const skipAuthorizationUrls = new Set([
 
 export const axiosConfig = () => {
 
-  axios.defaults.baseURL = 'http://localhost:3000'
+  axios.defaults.baseURL = hostConfig.request
 
   axios.interceptors.request.use((config) => {
     if (!config.url) { return config }
