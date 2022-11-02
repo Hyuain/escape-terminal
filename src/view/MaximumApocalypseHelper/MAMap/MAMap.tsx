@@ -9,7 +9,9 @@ export const MAMap = defineComponent({
   setup() {
     return () => <PageWrapper>
       <Header title='Maximum Apocalypse Helper'></Header>
-      <MAHelperContent>123</MAHelperContent>
+      <MAHelperContent>
+
+      </MAHelperContent>
       <MAHelperNavBar selectedLabel={MAHelperNavBarLabel.MAP} />
     </PageWrapper>
   }
