@@ -20,33 +20,39 @@ const setStorageData = (data: IStorageData) => {
   localStorage.setItem(StorageKey, JSON.stringify(data))
 }
 
-export const useMAData = defineStore('ma_data', () => {
-  const dataWrapper = reactive({
+export const useMADataStore = defineStore('ma_data', () => {
+  const MADataWrapper = reactive({
     data: getDefaultData()
   })
 
   const loadData = () => {
-    dataWrapper.data = getStorageData()
+    MADataWrapper.data = getStorageData()
   }
 
   const saveData = () => {
-    setStorageData(dataWrapper.data)
+    setStorageData(MADataWrapper.data)
+    loadData()
   }
 
-  const add = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>>): string => {
+  const add = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): string => {
+    console.log('xxxNewItem', newItem)
     newItem.id = generateRandomId()
-    dataWrapper.data[key].push(newItem as any)
+    if (key === 'maps') {
+      newItem.name = newItem.name || ''
+      ;(newItem as any).players = (newItem as any).players || []
+    }
+    MADataWrapper.data[key].push(newItem as any)
     saveData()
     return newItem.id
   }
 
   const remove = <T extends keyof IStorageData>(key: T, id: string) => {
-    dataWrapper.data[key] = dataWrapper.data[key].filter((item) => item.id !== id) as any
+    MADataWrapper.data[key] = MADataWrapper.data[key].filter((item) => item.id !== id) as any
     saveData()
   }
 
   const update = <T extends keyof IStorageData>(key: T, newItem: StorageDataType<T>) => {
-    const oldItem = dataWrapper.data[key].find((item) => item.id === newItem.id)
+    const oldItem = MADataWrapper.data[key].find((item) => item.id === newItem.id)
     if (!oldItem) { return }
     Object.assign(oldItem, newItem)
     saveData()
@@ -54,20 +60,21 @@ export const useMAData = defineStore('ma_data', () => {
 
   const getAll = <T extends keyof IStorageData>(key: T): IStorageData[T] => {
     loadData()
-    return dataWrapper.data[key]
+    console.log('xxxGetAll')
+    return MADataWrapper.data[key]
   }
 
   const getOne = <T extends keyof IStorageData>(key: T, id: string): StorageDataType<T> | undefined => {
     loadData()
-    return dataWrapper.data[key].find((item) => item.id === id) as any
+    return MADataWrapper.data[key].find((item) => item.id === id) as any
   }
 
   const movePlayer = (playerId: string, oldMapId: string, newMapId?: string) => {
-    const oldMap = dataWrapper.data.maps.find((item) => item.id === oldMapId)
+    const oldMap = MADataWrapper.data.maps.find((item) => item.id === oldMapId)
     if (!oldMap) { throw new Error('Unknown old map') }
     oldMap.players = oldMap.players.filter((item) => item !== playerId)
     const newMap = newMapId
-      ? dataWrapper.data.maps.find((item) => item.id === newMapId)
+      ? MADataWrapper.data.maps.find((item) => item.id === newMapId)
       : null
     if (!newMap) {
       add('maps', { players: [playerId] })
@@ -77,5 +84,5 @@ export const useMAData = defineStore('ma_data', () => {
     saveData()
   }
 
-  return { add, remove, update, getAll, getOne, movePlayer }
+  return { MADataWrapper, add, remove, update, getAll, getOne, movePlayer }
 })
