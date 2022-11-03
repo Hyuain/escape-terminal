@@ -10,11 +10,17 @@ export const PageWrapper = defineComponent({
   setup(props, context) {
     const actionSheet = useActionSheet()
     const modal = useModal()
+
+    const handleClickMask = () => {
+      actionSheet.closeActionSheet(-1)
+      modal.closeModal()
+    }
+
     return () => <div onScroll={(e) => context.emit('scroll', e)} style={{ height: `${window.innerHeight}px` }} class={s.pageWrapper}>
       {context.slots.default?.()}
       {
         actionSheet.actionSheetData.list.length || modal.modalData.render
-          ? <div onClick={() => actionSheet.closeActionSheet?.(-1)} class={s.mask}></div>
+          ? <div onClick={handleClickMask} class={s.mask}></div>
           : <div></div>
       }
       {

@@ -17,7 +17,8 @@ export const MAMap = defineComponent({
     const modal = useModal()
 
     const maps = dataStore.getAll('maps')
-    console.log('xxxMaps', maps)
+    const players = dataStore.getAll('players')
+
     const handleAddMap = () => {
       dataStore.add('maps')
     }
@@ -27,39 +28,49 @@ export const MAMap = defineComponent({
         { text: 'Show Player Detail' },
         { text: 'Move Player' },
       ]).then((index) => {
-        console.log('xxxI', index)
         if (index === 1) {
           modal.showModal({
-            render: () => <div onClick={console.log}>
-              {
-                maps
-                  .filter((item) => item.id !== map.id)
-                  .map((item) => (
-                    <div>
-                      <div onClick={() => handleMovePlayer(player, map.id, item.id)}>
-                        {item.name}
-                      </div>
-                      <div onClick={() => handleMovePlayer(player, map.id)}>Add New Map</div>
-                    </div>
-                  ))
-              }
+            render: () => <div>
+              {maps
+                .filter((item) => item.id !== map.id)
+                .map((item) => <div>
+                  <div onClick={() => handleMovePlayer(player, map.id, item.id)}>
+                    {item.name}
+                  </div>
+                  <div onClick={() => handleMovePlayer(player, map.id)}>Add New Map</div>
+                </div>)}
             </div>,
           })
         }
-      }).catch(() => {
-        console.log('xxxC')
       })
     }
 
-    const handleMovePlayer = (player: IPlayer, fromMapId: string, toMapId?: string) => {
+    const handleAddPlayer = (map: IMap) => {
+      const playersSetInThisMap = new Set(map.players)
+      modal.showModal({
+        render: () => <div>
+          {players.filter((player) => playersSetInThisMap.has(player.id))
+            .map((player) => <div onClick={() => handleMovePlayer(player, undefined, map.id)}>
+              {player.name}
+            </div>)}
+        </div>,
+      })
+    }
+
+    const handleMovePlayer = (player: IPlayer, fromMapId?: string, toMapId?: string) => {
       dataStore.movePlayer(player.id, fromMapId, toMapId)
+      modal.closeModal()
     }
 
     return () => <PageWrapper>
       <Header title="Maximum Apocalypse Helper"></Header>
       <MAHelperContent>
         <div>
-          {maps.map((map) => <MAMapCard onClickPlayer={(player) => handleClickPlayer(map, player)} map={map}/>)}
+          {maps.map((map) => <MAMapCard
+            map={map}
+            onClickPlayer={(player) => handleClickPlayer(map, player)}
+            onAddPlayer={() => handleAddPlayer(map)}
+          />)}
           <MAMapCard onAddMap={handleAddMap}/>
         </div>
       </MAHelperContent>

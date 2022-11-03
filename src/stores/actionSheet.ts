@@ -28,10 +28,12 @@ export const useActionSheet = defineStore('action_sheet', () => {
 
   const closeActionSheet = (index: number) => {
     actionSheetData.list = []
-    if (index < 0) {
-      actionSheetData.reject()
-    } else {
-      actionSheetData.resolve(index)
+    if (actionSheetData.reject && actionSheetData.resolve) {
+      if (index < 0) {
+        actionSheetData.reject()
+      } else {
+        actionSheetData.resolve(index)
+      }
     }
     actionSheetData.resolve = null
     actionSheetData.reject = null

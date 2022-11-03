@@ -69,10 +69,13 @@ export const useMADataStore = defineStore('ma_data', () => {
     return MADataWrapper.data[key].find((item) => item.id === id) as any
   }
 
-  const movePlayer = (playerId: string, oldMapId: string, newMapId?: string) => {
-    const oldMap = MADataWrapper.data.maps.find((item) => item.id === oldMapId)
-    if (!oldMap) { throw new Error('Unknown old map') }
-    oldMap.players = oldMap.players.filter((item) => item !== playerId)
+  const movePlayer = (playerId: string, oldMapId?: string, newMapId?: string) => {
+    const oldMap = oldMapId
+      ? MADataWrapper.data.maps.find((item) => item.id === oldMapId)
+      : null
+    if (oldMap) {
+      oldMap.players = oldMap.players.filter((item) => item !== playerId)
+    }
     const newMap = newMapId
       ? MADataWrapper.data.maps.find((item) => item.id === newMapId)
       : null
