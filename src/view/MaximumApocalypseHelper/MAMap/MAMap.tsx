@@ -47,7 +47,7 @@ export const MAMap = defineComponent({
       const playersSetInThisMap = new Set(map.players)
       modal.showModal({
         render: () => <div>
-          {maDataWrapper.data.players.filter((player) => playersSetInThisMap.has(player.id))
+          {maDataWrapper.data.players.filter((player) => !playersSetInThisMap.has(player.id))
             .map((player) => <div onClick={() => handleMovePlayer(player, undefined, map.id)}>
               {player.name}
             </div>)}

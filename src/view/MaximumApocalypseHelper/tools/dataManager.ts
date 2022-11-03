@@ -89,6 +89,11 @@ export const useMADataStore = defineStore('ma_data', () => {
       : null
     if (oldMap) {
       oldMap.players = oldMap.players.filter((item) => item !== playerId)
+    } else {
+      // if oldMap not specified, need search all maps to avoid duplication
+      MADataWrapper.data.maps.forEach((item) => {
+        item.players = item.players.filter((item) => item !== playerId)
+      })
     }
     const newMap = newMapId
       ? MADataWrapper.data.maps.find((item) => item.id === newMapId)
