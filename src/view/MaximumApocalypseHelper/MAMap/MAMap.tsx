@@ -4,11 +4,11 @@ import { MAHelperContent } from '../components/MAHelperContent/MAHelperContent'
 import { MAHelperNavBar } from '../components/MAHelperNavBar/MAHelperNavBar'
 import { Header } from '../../../components/Header/Header'
 import { MAHelperNavBarLabel } from '../components/MAHelperNavBar/MAHelperNavBar.interface'
-import { MAMapCard } from './components/MAMapCard'
 import { useMADataStore } from '../tools/dataManager'
 import { useActionSheet } from '../../../stores/actionSheet'
 import { useModal } from '../../../stores/modal'
 import { IMap, IPlayer } from '../tools/dataManager.interface'
+import { MAMapCard } from './components/MAMapCard/MAMapCard'
 
 export const MAMap = defineComponent({
   setup() {

@@ -11,8 +11,11 @@ export type StorageDataType<T> = T extends 'players' ? IPlayer
 
 export interface IPlayer {
   id: string
+  maxHp: number
   name?: string
-  monsters: string[]
+  monsters?: string[]
+  hp?: number
+  description?: string
 }
 
 export interface IMonster {

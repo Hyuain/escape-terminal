@@ -34,16 +34,31 @@ export const useMADataStore = defineStore('ma_data', () => {
     loadData()
   }
 
-  const add = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): string => {
-    console.log('xxxNewItem', newItem)
-    newItem.id = generateRandomId()
+  const completeNewItem = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): StorageDataType<T> => {
+    newItem.id = newItem.id || generateRandomId()
     if (key === 'maps') {
       newItem.name = newItem.name || ''
       ;(newItem as any).players = (newItem as any).players || []
     }
+    return newItem as StorageDataType<T>
+  }
+
+  const add = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): string => {
+    console.log('xxxNewItem', newItem)
+    completeNewItem(key, newItem)
     MADataWrapper.data[key].push(newItem as any)
     saveData()
-    return newItem.id
+    return newItem.id as string
+  }
+
+  const addMany = <T extends keyof IStorageData>(key: T, newItems: Partial<StorageDataType<T>>[] = []): string[] => {
+    console.log('xxxNewItems', newItems)
+    newItems.forEach((newItem) => {
+      completeNewItem(key, newItem)
+    })
+    MADataWrapper.data[key].push(...newItems as any)
+    saveData()
+    return newItems.map((item) => item.id) as string[]
   }
 
   const remove = <T extends keyof IStorageData>(key: T, id: string) => {
@@ -87,5 +102,13 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
-  return { MADataWrapper, add, remove, update, getAll, getOne, movePlayer }
+  const getDefaultPlayers = (): Promise<IPlayer[]> => {
+    return Promise.resolve([
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
+    ])
+  }
+
+  return { getDefaultPlayers, MADataWrapper, add, addMany, remove, update, getAll, getOne, movePlayer }
 })

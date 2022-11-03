@@ -1,8 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import s from './MAMapCard.module.scss'
-import { useMADataStore } from '../../tools/dataManager'
-import { MAHelperAvatar } from '../../components/MAHelperAvatar/MAHelperAvatar'
-import { IMap } from '../../tools/dataManager.interface'
+import { MAHelperAvatar } from '../../../components/MAHelperAvatar/MAHelperAvatar'
+import { IMap } from '../../../tools/dataManager.interface'
 
 export const MAMapCard = defineComponent({
   props: {

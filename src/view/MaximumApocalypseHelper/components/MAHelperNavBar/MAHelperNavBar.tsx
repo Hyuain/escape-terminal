@@ -20,7 +20,7 @@ export const MAHelperNavBar = defineComponent({
     const router = useRouter()
 
     const handleChangeLabel = (action: IAction) => {
-      router.push(`/ma_helper/${action.path}`)
+      router.replace(`/ma_helper/${action.path}`)
     }
 
     return () => <div class={s.navBar}>
