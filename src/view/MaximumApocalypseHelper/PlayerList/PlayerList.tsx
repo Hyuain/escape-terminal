@@ -14,7 +14,7 @@ export const PlayerList = defineComponent({
     const dataStore = useMADataStore()
     const router = useRouter()
 
-    const players = dataStore.getAll('players')
+    const maDataWrapper = dataStore.getWrapper()
 
     const handleAddPlayers = () => {
       router.push('/ma_helper/add_players')
@@ -23,7 +23,7 @@ export const PlayerList = defineComponent({
     return () => <PageWrapper>
       <Header title='Maximum Apocalypse Helper'></Header>
       <MAHelperContent>
-        {players.map((player) => <PlayerItem player={player} />)}
+        {maDataWrapper.data.players.map((player) => <PlayerItem player={player} />)}
         <PlayerItem onAddPlayer={handleAddPlayers} />
       </MAHelperContent>
       <MAHelperNavBar selectedLabel={MAHelperNavBarLabel.PLAYERS} />

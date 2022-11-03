@@ -15,9 +15,7 @@ export const MAMap = defineComponent({
     const dataStore = useMADataStore()
     const actionSheet = useActionSheet()
     const modal = useModal()
-
-    const maps = dataStore.getAll('maps')
-    const players = dataStore.getAll('players')
+    const maDataWrapper = dataStore.getWrapper()
 
     const handleAddMap = () => {
       dataStore.add('maps')
@@ -31,7 +29,7 @@ export const MAMap = defineComponent({
         if (index === 1) {
           modal.showModal({
             render: () => <div>
-              {maps
+              {maDataWrapper.data.maps
                 .filter((item) => item.id !== map.id)
                 .map((item) => <div>
                   <div onClick={() => handleMovePlayer(player, map.id, item.id)}>
@@ -49,7 +47,7 @@ export const MAMap = defineComponent({
       const playersSetInThisMap = new Set(map.players)
       modal.showModal({
         render: () => <div>
-          {players.filter((player) => playersSetInThisMap.has(player.id))
+          {maDataWrapper.data.players.filter((player) => playersSetInThisMap.has(player.id))
             .map((player) => <div onClick={() => handleMovePlayer(player, undefined, map.id)}>
               {player.name}
             </div>)}
@@ -66,7 +64,7 @@ export const MAMap = defineComponent({
       <Header title="Maximum Apocalypse Helper"></Header>
       <MAHelperContent>
         <div>
-          {maps.map((map) => <MAMapCard
+          {maDataWrapper.data.maps.map((map) => <MAMapCard
             map={map}
             onClickPlayer={(player) => handleClickPlayer(map, player)}
             onAddPlayer={() => handleAddPlayer(map)}

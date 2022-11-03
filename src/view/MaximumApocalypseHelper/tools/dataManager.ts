@@ -31,7 +31,6 @@ export const useMADataStore = defineStore('ma_data', () => {
 
   const saveData = () => {
     setStorageData(MADataWrapper.data)
-    loadData()
   }
 
   const completeNewItem = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): StorageDataType<T> => {
@@ -73,12 +72,12 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
-  const getAll = <T extends keyof IStorageData>(key: T): IStorageData[T] => {
+  const getWrapper = () => {
     loadData()
-    console.log('xxxGetAll')
-    return MADataWrapper.data[key]
+    return MADataWrapper
   }
 
+  // loadDataRisk
   const getOne = <T extends keyof IStorageData>(key: T, id: string): StorageDataType<T> | undefined => {
     loadData()
     return MADataWrapper.data[key].find((item) => item.id === id) as any
@@ -110,5 +109,5 @@ export const useMADataStore = defineStore('ma_data', () => {
     ])
   }
 
-  return { getDefaultPlayers, MADataWrapper, add, addMany, remove, update, getAll, getOne, movePlayer }
+  return { getDefaultPlayers, MADataWrapper, add, addMany, remove, update, getWrapper, getOne, movePlayer }
 })
