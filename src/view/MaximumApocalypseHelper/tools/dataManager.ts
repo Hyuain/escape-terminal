@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import { IMap, IMonster, IPlayer, IStorageData, StorageDataType } from './dataManager.interface'
 import { generateRandomId } from '../../../shared/tools'
+import { MAMap } from '../MAMap/MAMap'
 
 const StorageKey = 'MA_HELPER'
 const getDefaultData = (): IStorageData => {
@@ -33,11 +34,15 @@ export const useMADataStore = defineStore('ma_data', () => {
     setStorageData(MADataWrapper.data)
   }
 
-  const completeNewItem = <T extends keyof IStorageData>(key: T, newItem: Partial<StorageDataType<T>> = {}): StorageDataType<T> => {
+  const completeNewItem = <T extends keyof IStorageData>(key: T, newItem: any = {}): StorageDataType<T> => {
     newItem.id = newItem.id || generateRandomId()
     if (key === 'maps') {
       newItem.name = newItem.name || ''
       ;(newItem as any).players = (newItem as any).players || []
+    } else if (key === 'monsters') {
+      ;(newItem as any).hp = newItem.hp || newItem.maxHp
+    } else if (key === 'players') {
+      newItem.hp = newItem.hp || newItem.maxHp
     }
     return newItem as StorageDataType<T>
   }
@@ -147,8 +152,30 @@ export const useMADataStore = defineStore('ma_data', () => {
     ])
   }
 
+  const getMonsterAttachedPlayer = (monsterId?: string): IPlayer | undefined => {
+    if (!monsterId) { return }
+    return MADataWrapper.data.players.find((player) => {
+      return player.monsters?.includes(monsterId)
+    })
+  }
+
+  const getPlayerPosition = (playerId?: string): IMap | undefined => {
+    if (!playerId) { return }
+    return MADataWrapper.data.maps.find((map) => {
+      return map.players?.includes(playerId)
+    })
+  }
+
+  const getPlayersUsingMap = (mapId?: string): IPlayer[] => {
+    if (!mapId) { return [] }
+    const map = MADataWrapper.data.maps.find((map) => map.id === mapId)
+    if (!map) { return [] }
+    return MADataWrapper.data.players.filter((player) => map.players.includes(player.id))
+  }
+
   return {
     getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
     movePlayer, attachMonster, detachMonster, removeMonster,
+    getMonsterAttachedPlayer, getPlayerPosition, getPlayersUsingMap,
   }
 })
