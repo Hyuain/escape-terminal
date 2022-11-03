@@ -21,6 +21,10 @@ export interface IPlayer {
 export interface IMonster {
   id: string
   name?: string
+  hp?: number
+  maxHp: number
+  atk: number
+  description?: string
 }
 
 export interface IMap {

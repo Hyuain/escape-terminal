@@ -55,6 +55,7 @@ export const MAMapCard = defineComponent({
             </div>
             <div>
               {props.map.players.map((playerId) => <MAHelperAvatar
+                type='players'
                 onClick={() => context.emit('clickPlayer', playerId)}
                 id={playerId}/>)}
               <MAHelperAvatar onClick={() => context.emit('addPlayer')}/>

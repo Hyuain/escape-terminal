@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
-import { IMap, IPlayer, IStorageData, StorageDataType } from './dataManager.interface'
+import { IMap, IMonster, IPlayer, IStorageData, StorageDataType } from './dataManager.interface'
 import { generateRandomId } from '../../../shared/tools'
 
 const StorageKey = 'MA_HELPER'
@@ -22,7 +22,7 @@ const setStorageData = (data: IStorageData) => {
 
 export const useMADataStore = defineStore('ma_data', () => {
   const MADataWrapper = reactive({
-    data: getDefaultData()
+    data: getDefaultData(),
   })
 
   const loadData = () => {
@@ -61,12 +61,12 @@ export const useMADataStore = defineStore('ma_data', () => {
   }
 
   const remove = <T extends keyof IStorageData>(key: T, id: string) => {
-    MADataWrapper.data[key] = MADataWrapper.data[key].filter((item) => item.id !== id) as any
+    MADataWrapper.data[key] = (MADataWrapper.data[key] as any).filter((item: any) => item.id !== id) as any
     saveData()
   }
 
   const update = <T extends keyof IStorageData>(key: T, newItem: StorageDataType<T>) => {
-    const oldItem = MADataWrapper.data[key].find((item) => item.id === newItem.id)
+    const oldItem = (MADataWrapper.data[key] as any).find((item: any) => item.id === newItem.id)
     if (!oldItem) { return }
     Object.assign(oldItem, newItem)
     saveData()
@@ -80,7 +80,7 @@ export const useMADataStore = defineStore('ma_data', () => {
   // loadDataRisk
   const getOne = <T extends keyof IStorageData>(key: T, id: string): StorageDataType<T> | undefined => {
     loadData()
-    return MADataWrapper.data[key].find((item) => item.id === id) as any
+    return (MADataWrapper.data[key] as any).find((item: any) => item.id === id) as any
   }
 
   const movePlayer = (playerId: string, oldMapId?: string, newMapId?: string) => {
@@ -106,6 +106,31 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
+  const attachMonster = (monsterId: string, playerId: string) => {
+    const player = MADataWrapper.data.players.find((player) => player.id === playerId)
+    if (!player) { return }
+    if (!player.monsters) {
+      player.monsters = []
+    }
+    player.monsters.push(monsterId)
+    saveData()
+  }
+
+  const detachMonster = (monsterId: string, playerId: string) => {
+    const player = MADataWrapper.data.players.find((player) => player.id === playerId)
+    if (!player) { return }
+    player.monsters = (player.monsters || []).filter((id) => id !== monsterId)
+    saveData()
+  }
+
+  const removeMonster = (monsterId: string) => {
+    remove('monsters', monsterId)
+    MADataWrapper.data.players.forEach((player) => {
+      player.monsters = (player.monsters || []).filter((id) => id !== monsterId)
+    })
+    saveData()
+  }
+
   const getDefaultPlayers = (): Promise<IPlayer[]> => {
     return Promise.resolve([
       { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
@@ -114,5 +139,16 @@ export const useMADataStore = defineStore('ma_data', () => {
     ])
   }
 
-  return { getDefaultPlayers, MADataWrapper, add, addMany, remove, update, getWrapper, getOne, movePlayer }
+  const getDefaultMonsters = (): Promise<IMonster[]> => {
+    return Promise.resolve([
+      { id: 'xxx1', name: 'm1', maxHp: 10, hp: 10, atk: 5 },
+      { id: 'xxx2', name: 'm2', maxHp: 10, hp: 10, atk: 6 },
+      { id: 'xxx3', name: 'm3', maxHp: 10, hp: 10, atk: 7 },
+    ])
+  }
+
+  return {
+    getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
+    movePlayer, attachMonster, detachMonster, removeMonster,
+  }
 })

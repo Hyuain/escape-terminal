@@ -1,0 +1,6 @@
+.item {
+  border: 1px solid black;
+  &.selected {
+    border: 1px solid red;
+  }
+}
