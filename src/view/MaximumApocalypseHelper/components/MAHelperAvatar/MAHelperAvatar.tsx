@@ -12,9 +12,10 @@ export const MAHelperAvatar = defineComponent({
       default: 'players',
     },
   },
-  setup(props) {
+  emits: ['click'],
+  setup(props, context) {
     const dataStore = useMADataStore()
-    return () => <div class={s.avatar}>
+    return () => <div onClick={(e) => context.emit('click', e)} class={s.avatar}>
       {
         props.id
           ? dataStore.getOne(props.type, props.id)?.name

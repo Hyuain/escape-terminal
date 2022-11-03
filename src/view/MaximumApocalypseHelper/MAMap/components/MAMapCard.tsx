@@ -11,24 +11,21 @@ export const MAMapCard = defineComponent({
     //   type: String,
     // },
   },
-  emits: ['click'],
+  emits: ['addMap', 'addPlayer', 'clickPlayer'],
   setup(props, context) {
     // const dataStore = useMADataStore()
-    const handleClick = () => {
-      context.emit('click')
-    }
 
-    return () => <div onClick={handleClick} class={s.card}>
+    return () => <div class={s.card}>
       {
         props.map
           ? <div>
             <div>{props.map.name || 'Default Name'}</div>
             <div>
-              {props.map.players.map((player) => <MAHelperAvatar id={player}/>)}
-              <MAHelperAvatar />
+              {props.map.players.map((player) => <MAHelperAvatar onClick={() => context.emit('clickPlayer', player)} id={player}/>)}
+              <MAHelperAvatar onClick={() => context.emit('addPlayer')} />
             </div>
           </div>
-          : <div>+</div>
+          : <div onClick={() => context.emit('addMap')}>+</div>
       }
     </div>
   },
