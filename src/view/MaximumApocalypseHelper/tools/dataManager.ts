@@ -18,6 +18,7 @@ const getStorageData = (): IStorageData => {
 }
 
 const setStorageData = (data: IStorageData) => {
+  console.log('xxxSetStorageData', data)
   localStorage.setItem(StorageKey, JSON.stringify(data))
 }
 
@@ -31,6 +32,7 @@ export const useMADataStore = defineStore('ma_data', () => {
   }
 
   const saveData = () => {
+    console.log('xxxSaveData')
     setStorageData(MADataWrapper.data)
   }
 
@@ -72,6 +74,7 @@ export const useMADataStore = defineStore('ma_data', () => {
 
   const update = <T extends keyof IStorageData>(key: T, newItem: StorageDataType<T>) => {
     const oldItem = (MADataWrapper.data[key] as any).find((item: any) => item.id === newItem.id)
+    console.log('xxxUpdate', oldItem, key, newItem)
     if (!oldItem) { return }
     Object.assign(oldItem, newItem)
     saveData()
@@ -128,7 +131,7 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
-  const removeMonster = (monsterId: string) => {
+  const destroyMonster = (monsterId: string) => {
     remove('monsters', monsterId)
     MADataWrapper.data.players.forEach((player) => {
       player.monsters = (player.monsters || []).filter((id) => id !== monsterId)
@@ -175,7 +178,7 @@ export const useMADataStore = defineStore('ma_data', () => {
 
   return {
     getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
-    movePlayer, attachMonster, detachMonster, removeMonster,
+    movePlayer, attachMonster, detachMonster, destroyMonster,
     getMonsterAttachedPlayer, getPlayerPosition, getPlayersUsingMap,
   }
 })

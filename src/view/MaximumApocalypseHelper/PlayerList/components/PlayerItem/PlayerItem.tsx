@@ -7,7 +7,6 @@ import { useMADataStore } from '../../../tools/dataManager'
 export const PlayerItem = defineComponent({
   props: {
     player: Object as PropType<IPlayer>,
-    playerId: String,
     isSelected: Boolean,
     isShowMonsters: Boolean,
   },
@@ -15,15 +14,13 @@ export const PlayerItem = defineComponent({
   setup(props, context) {
     const dataStore = useMADataStore()
 
-    const player: IPlayer = props.player || dataStore.getOne('monsters', props.playerId) as IPlayer
-
     return () => <div class={{ [`${s.item}`]: true, [`${s.selected}`]: props.isSelected }}>
-      {player
+      {props.player
         ? <div onClick={() => context.emit('clickPlayer', props.player)}>
-          <div>{player.name}</div>
+          <div>{props.player.name}</div>
           {props.isShowMonsters
             ? <div>
-              {player.monsters?.map((monsterId) => <MAHelperAvatar
+              {props.player.monsters?.map((monsterId) => <MAHelperAvatar
                 type="monsters"
                 onClick={() => context.emit('clickMonster', monsterId)}
                 id={monsterId}/>)}

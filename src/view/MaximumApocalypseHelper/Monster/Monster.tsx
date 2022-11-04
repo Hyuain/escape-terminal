@@ -24,7 +24,12 @@ export const Monster = defineComponent({
         monster.hp = monster.maxHp
       }
       monster.hp = monster.hp + delta
-      dataStore.update('players', monster)
+      dataStore.update('monsters', monster)
+    }
+
+    const handleDestroyMonster = () => {
+      dataStore.destroyMonster(monsterId)
+      router.back()
     }
 
     return () => <PageWrapper>
@@ -38,7 +43,9 @@ export const Monster = defineComponent({
             <div onClick={() => editMonsterHp(+1)}>+</div>
           </div>
           <div>MaxHp: {monster.maxHp}</div>
-          <div>HostPlayer:</div>
+          <div>Position: {hostPlayerMap?.name}</div>
+          <div>ATK: {monster.atk}</div>
+          <div>HostPlayer: </div>
           <div>
             <PlayerItem player={hostPlayer}/>
           </div>
@@ -48,6 +55,7 @@ export const Monster = defineComponent({
               player={player}
             />)}
           </div>
+          <div onClick={() => handleDestroyMonster()}>Destroy Monster</div>
         </div>
         : <div>No Data</div>
       }
