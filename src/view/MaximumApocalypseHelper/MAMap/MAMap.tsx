@@ -7,13 +7,15 @@ import { MAHelperNavBarLabel } from '../components/MAHelperNavBar/MAHelperNavBar
 import { useMADataStore } from '../tools/dataManager'
 import { useActionSheet } from '../../../stores/actionSheet'
 import { useModal } from '../../../stores/modal'
-import { IMap, IPlayer } from '../tools/dataManager.interface'
+import { IMap } from '../tools/dataManager.interface'
 import { MAMapCard } from './components/MAMapCard/MAMapCard'
+import { useRouter } from 'vue-router'
 
 export const MAMap = defineComponent({
   setup() {
     const dataStore = useMADataStore()
     const actionSheet = useActionSheet()
+    const router = useRouter()
     const modal = useModal()
     const maDataWrapper = dataStore.getWrapper()
 
@@ -21,21 +23,29 @@ export const MAMap = defineComponent({
       dataStore.add('maps')
     }
 
-    const handleClickPlayer = (map: IMap, player: IPlayer) => {
+    const handleClickPlayer = (map: IMap, playerId: string) => {
       actionSheet.showActionSheet([
         { text: 'Show Player Detail' },
         { text: 'Move Player' },
       ]).then((index) => {
-        if (index === 1) {
+        if (index === 0) {
+          console.log("xxxxPlayer", playerId)
+          router.push({
+            path:'/ma_helper/player',
+            query: {
+              id: playerId,
+            }
+          })
+        } else if (index === 1) {
           modal.showModal({
             render: () => <div>
               {maDataWrapper.data.maps
                 .filter((item) => item.id !== map.id)
                 .map((item) => <div>
-                  <div onClick={() => handleMovePlayer(player, map.id, item.id)}>
+                  <div onClick={() => handleMovePlayer(playerId, map.id, item.id)}>
                     {item.name}
                   </div>
-                  <div onClick={() => handleMovePlayer(player, map.id)}>Add New Map</div>
+                  <div onClick={() => handleMovePlayer(playerId, map.id)}>Add New Map</div>
                 </div>)}
             </div>,
           })
@@ -48,15 +58,15 @@ export const MAMap = defineComponent({
       modal.showModal({
         render: () => <div>
           {maDataWrapper.data.players.filter((player) => !playersSetInThisMap.has(player.id))
-            .map((player) => <div onClick={() => handleMovePlayer(player, undefined, map.id)}>
+            .map((player) => <div onClick={() => handleMovePlayer(player.id, undefined, map.id)}>
               {player.name}
             </div>)}
         </div>,
       })
     }
 
-    const handleMovePlayer = (player: IPlayer, fromMapId?: string, toMapId?: string) => {
-      dataStore.movePlayer(player.id, fromMapId, toMapId)
+    const handleMovePlayer = (playerId: string, fromMapId?: string, toMapId?: string) => {
+      dataStore.movePlayer(playerId, fromMapId, toMapId)
       modal.closeModal()
     }
 
@@ -66,7 +76,7 @@ export const MAMap = defineComponent({
         <div>
           {maDataWrapper.data.maps.map((map) => <MAMapCard
             map={map}
-            onClickPlayer={(player) => handleClickPlayer(map, player)}
+            onClickPlayer={(playerId) => handleClickPlayer(map, playerId)}
             onAddPlayer={() => handleAddPlayer(map)}
           />)}
           <MAMapCard onAddMap={handleAddMap}/>

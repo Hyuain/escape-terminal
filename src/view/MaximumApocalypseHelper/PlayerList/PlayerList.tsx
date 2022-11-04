@@ -32,10 +32,10 @@ export const PlayerList = defineComponent({
     }
 
     const handleAddMonster = (player: IPlayer) => {
-      const monstersSetInThisMap = new Set(player.monsters)
+      const monstersSetWithThisPlayer = new Set(player.monsters)
       modal.showModal({
         render: () => <div>
-          {maDataWrapper.data.monsters.filter((monster) => !monstersSetInThisMap.has(monster.id))
+          {maDataWrapper.data.monsters.filter((monster) => !monstersSetWithThisPlayer.has(monster.id))
             .map((monster) => <div onClick={() => attachMonster(monster.id, player.id)}>
               {monster.name}
             </div>)}

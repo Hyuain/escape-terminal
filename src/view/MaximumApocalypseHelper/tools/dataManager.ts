@@ -83,7 +83,7 @@ export const useMADataStore = defineStore('ma_data', () => {
   }
 
   // loadDataRisk
-  const getOne = <T extends keyof IStorageData>(key: T, id: string): StorageDataType<T> | undefined => {
+  const getOne = <T extends keyof IStorageData>(key: T, id?: string): StorageDataType<T> | undefined => {
     loadData()
     return (MADataWrapper.data[key] as any).find((item: any) => item.id === id) as any
   }
