@@ -1,39 +1,53 @@
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
-import { IMap, IMonster, IPlayer, IStorageData, StorageDataType } from './dataManager.interface'
+import { reactive, ref } from 'vue'
+import { IMap, IMonster, IPlayer, IStorageData, IStorageDataExtra, StorageDataType } from './dataManager.interface'
 import { generateRandomId } from '../../../shared/tools'
-import { MAMap } from '../MAMap/MAMap'
+import axios from 'axios'
 
 const StorageKey = 'MA_HELPER'
-const getDefaultData = (): IStorageData => {
-  return {
-    players: [],
-    monsters: [],
-    maps: [],
-  }
-}
 
 const getStorageData = (): IStorageData => {
-  return JSON.parse(localStorage.getItem(StorageKey) || JSON.stringify(getDefaultData()))
+  return JSON.parse(localStorage.getItem(StorageKey) || '{}')
 }
 
-const setStorageData = (data: IStorageData) => {
+const setStorageData = (data: IStorageDataExtra) => {
   console.log('xxxSetStorageData', data)
   localStorage.setItem(StorageKey, JSON.stringify(data))
 }
 
 export const useMADataStore = defineStore('ma_data', () => {
-  const MADataWrapper = reactive({
-    data: getDefaultData(),
+  const MADataWrapper = reactive<{ data: IStorageDataExtra }>({
+    data: {
+      players: [],
+      monsters: [],
+      maps: [],
+    },
   })
+  const isDataLoaded = ref(false)
 
-  const loadData = () => {
-    MADataWrapper.data = getStorageData()
+  const loadData = async () => {
+    if (isDataLoaded.value) { return }
+    const dataFromLocal: IStorageDataExtra = getStorageData()
+    const resFromCloud = (await axios.get('/api/v1/ma_helper_stores')).data[0]
+    const dataFromCloud: IStorageDataExtra = JSON.parse(resFromCloud.content)
+    const dataFromLocalTimestamp = new Date(dataFromLocal.timestamp || 0).getTime()
+    const dataFromCloudTimestamp = new Date(dataFromCloud.timestamp || 0).getTime()
+    MADataWrapper.data = dataFromLocalTimestamp > dataFromCloudTimestamp ? dataFromLocal : dataFromCloud
+    MADataWrapper.data.id = resFromCloud.id
+    isDataLoaded.value = true
   }
 
   const saveData = () => {
-    console.log('xxxSaveData')
-    setStorageData(MADataWrapper.data)
+    const timestamp = new Date().toISOString()
+    const data = {
+      ...MADataWrapper.data,
+      timestamp,
+    }
+    setStorageData(data)
+    axios.put(`/api/v1/ma_helper_stores/${MADataWrapper.data.id}`, {
+      content: JSON.stringify(data),
+      timestamp,
+    }).then()
   }
 
   const completeNewItem = <T extends keyof IStorageData>(key: T, newItem: any = {}): StorageDataType<T> => {
@@ -81,13 +95,11 @@ export const useMADataStore = defineStore('ma_data', () => {
   }
 
   const getWrapper = () => {
-    loadData()
     return MADataWrapper
   }
 
   // loadDataRisk
   const getOne = <T extends keyof IStorageData>(key: T, id?: string): StorageDataType<T> | undefined => {
-    loadData()
     return (MADataWrapper.data[key] as any).find((item: any) => item.id === id) as any
   }
 
@@ -177,6 +189,7 @@ export const useMADataStore = defineStore('ma_data', () => {
   }
 
   return {
+    loadData,
     getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
     movePlayer, attachMonster, detachMonster, destroyMonster,
     getMonsterAttachedPlayer, getPlayerPosition, getPlayersUsingMap,

@@ -4,6 +4,11 @@ export interface IStorageData {
   maps: IMap[]
 }
 
+export interface IStorageDataExtra extends IStorageData {
+  id?: number
+  timestamp?: number | string | Date
+}
+
 export type StorageDataType<T> = T extends 'players' ? IPlayer
   : T extends 'monsters' ? IMonster
     : T extends 'maps' ? IMap
