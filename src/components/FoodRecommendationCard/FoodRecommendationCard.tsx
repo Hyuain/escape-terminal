@@ -7,7 +7,7 @@ export const FoodRecommendationCard = defineComponent({
       return Math.floor(Math.random() * recommendationArray.length)
     }
 
-    const recommendationArray = ['番茄牛腩', '红烧排骨', '水煮鱼', '小炒肉', '回锅肉', '鱼香肉丝']
+    const recommendationArray = ['shredded pork with garlic sauce', '红烧排骨', '水煮鱼', '小炒肉', '回锅肉', '鱼香肉丝']
     const recommendationIndexRef = ref(getRandomIndex())
 
     const handleRoll = () => {
@@ -15,11 +15,20 @@ export const FoodRecommendationCard = defineComponent({
     }
 
     return () => <div class={s.cardWrapper}>
-      <div class={s.description}>午饭时间到啦，今天推荐：</div>
-      <div class={s.recommendation}>
-        {recommendationArray[recommendationIndexRef.value]}
-        <div onClick={handleRoll} class={s.roll}>Roll</div>
+      <div class={s.cardContent}>
+        <div class={[s.paragraph]}>
+          hi, nice to meet you!
+        </div>
+        <div class={[s.paragraph]}>
+          <div>would you like to try</div>
+          <div class={s.recommendation}>
+            {recommendationArray[recommendationIndexRef.value]}
+          </div>
+          <div>as today’s meal?</div>
+          <img onClick={handleRoll} class={s.roll} src="/refresh.svg"/>
+        </div>
       </div>
+
     </div>
   }
 })

@@ -11,9 +11,6 @@ import { useRouter } from 'vue-router'
 const appList: IApp[] = [
   { name: 'Chat', icon: 'ICON', path: '/chat/room' },
   { name: 'Maximum Apocalypse Helper', icon: 'ICON', 'path': '/ma_helper' },
-  { name: 'Chat', icon: 'ICON', path: '/chat/room' },
-  { name: 'Chat', icon: 'ICON', path: '/chat/room' },
-  { name: 'Chat', icon: 'ICON', path: '/chat/room' },
 ]
 
 export const Home = defineComponent({
@@ -27,17 +24,25 @@ export const Home = defineComponent({
     }
 
     return () => <PageWrapper>
-      <div>
-        Welcome! {userStore.user.email}.
-      </div>
       <Weather class={s.weatherCard}></Weather>
       <div class={s.appsContainer}>
-        {
-          appList.map((app) => {
-            return <AppIcon onClick={() => handleClickApp(app)} class={s.app} name={app.name}>{app.icon}</AppIcon>
-          })
-        }
-        <FoodRecommendationCard class={s.widget100}/>
+        <div class={s.widget100}>
+          <div class={[s.widget50, s.cableWrapper]}>
+            <img class={[s.cable]} src='/cables.svg' />
+          </div>
+        </div>
+        <div class={s.widget50}>
+          <FoodRecommendationCard />
+        </div>
+        <div class={[s.widget50, s.appCard]}>
+          {
+            appList.map((app) => {
+              return <AppIcon onClick={() => handleClickApp(app)} class={s.app} name={app.name}>
+                <img src="/app-default.svg"/>
+              </AppIcon>
+            })
+          }
+        </div>
       </div>
     </PageWrapper>
   },

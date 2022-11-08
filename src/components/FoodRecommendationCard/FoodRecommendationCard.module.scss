@@ -3,21 +3,35 @@
   border: 1px solid black;
   border-radius: 16px;
   padding: 16px;
+  background: #E2E2E2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
-  .description {
-
-  }
-  .recommendation {
-    margin-top: 8px;
-    text-align: center;
-    font-size: 32px;
-    font-weight: 700;
-    position: relative;
+  font-family: 'Cairo', sans-serif;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: -0.04em;
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    background: url("/noise.png");
+    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.44);
+    border-radius: 6px;
+    padding: 12px;
+    .paragraph {
+      display: flex;
+      flex-direction: column;
+      background: rgba(244, 244, 244, 0.83);
+      border-radius: 8px;
+      padding: 8px;
+      &:not(:first-child) {
+        margin-top: 16px;
+      }
+    }
+    .recommendation {
+      color: #921212;
+      text-decoration: underline;
+    }
     .roll {
-      font-size: 14px;
-      position: absolute;
-      right: 20px;
-      bottom: 0;
+      align-self: center;
     }
   }
 }

@@ -1,25 +1,45 @@
 .card-wrapper {
-  border: 1px solid black;
+  background: #E2E2E2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  display: flex;
-  .left {
-    flex-grow: 1;
-    padding-left: 12px;
-    .time {
-      font-size: 32px;
-      font-weight: 700;
+  padding: 18px 22px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'Cairo', sans-serif;
+  .card-content {
+    display: flex;
+    background: url("/noise.png");
+    box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.44);
+    border-radius: 6px;
+    padding: 12px;
+    .left {
+      width: 50%;
+      background: rgba(244, 244, 244, 0.83);
+      border-radius: 8px;
+      padding: 8px;
     }
-  }
-  .right {
-    flex-shrink: 0;
-    padding-right: 12px;
-    .weather {
+    .right {
+      width: 50%;
+      flex-shrink: 0;
       display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .time {
+      line-height: 40px;
+      font-size: 48px;
+    }
+    .weather {
+      height: 76px;
       .description {
-
+        font-size: 20px;
+        line-height: 28px;
       }
       .temperature {
-        margin-left: 8px;
+        line-height: 20px;
+      }
+      .city {
+        font-size: 20px;
+        line-height: 28px;
       }
     }
   }

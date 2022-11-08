@@ -2,13 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
   .icon {
     width: 64px;
     height: 64px;
-    border: 1px solid black;
     border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .name {
-
+    max-width: 64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
   }
 }

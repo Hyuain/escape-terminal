@@ -11,7 +11,7 @@ export const AppIcon = defineComponent({
       <div class={s.icon}>
         {context.slots.default?.()}
       </div>
-      <div>{props.name}</div>
+      <div class={s.name}>{props.name}</div>
     </div>
   }
 })
