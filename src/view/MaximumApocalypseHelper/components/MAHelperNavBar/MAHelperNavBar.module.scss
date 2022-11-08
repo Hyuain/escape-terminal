@@ -3,16 +3,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
+  background: white;
+  border-radius: 8px 8px 0 0 ;
+  padding: 8px 8px;
 }
 .item {
   width: 33%;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: all .3s;
+  .icon {
+  }
+  .label {
+    font-size: 16px;
+    line-height: 16px;
+  }
   &.selected {
-    border: 1px solid blue;
+    background: rgba(0, 0, 0, .3);
+    padding: 6px 0;
+    border-radius: 8px;
+    color: white;
   }
 }

@@ -1,3 +1,45 @@
-.card {
-  border: 1px solid red;
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    input {
+      border: none;
+      background: rgba(0, 0, 0, .1);
+      border-radius: 4px;
+      padding: 0 8px;
+    }
+  }
+  .icon {
+    margin-left: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 8px;
+    }
+  }
+}
+.players-wrapper {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.add-map {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  .add-map-icon {
+  }
+  .add-map-text {
+    font-size: 16px;
+    line-height: 16px;
+  }
 }

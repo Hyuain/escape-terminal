@@ -3,6 +3,11 @@ import s from './MAMapCard.module.scss'
 import { MAHelperAvatar } from '../../../components/MAHelperAvatar/MAHelperAvatar'
 import { IMap } from '../../../tools/dataManager.interface'
 import { useMADataStore } from '../../../tools/dataManager'
+import EditSVG from '../../../../../assets/edit.svg'
+import CorrectSVG from '../../../../../assets/correct.svg'
+import WrongSVG from '../../../../../assets/wrong.svg'
+import PlusSVG from '../../../../../assets/plus.svg'
+import { Card } from '@/components/Card/Card'
 
 export const MAMapCard = defineComponent({
   props: {
@@ -11,7 +16,7 @@ export const MAMapCard = defineComponent({
     //   type: String,
     // },
   },
-  emits: ['addMap', 'addPlayer', 'clickPlayer'],
+  emits: ['addMap', 'addPlayer', 'clickPlayer', 'deleteMap'],
   setup(props, context) {
     const dataStore = useMADataStore()
     const isEditingName = ref(false)
@@ -37,32 +42,47 @@ export const MAMapCard = defineComponent({
       editingName.value = e.target.value
     }
 
-    return () => <div class={s.card}>
+    return () => <Card onClickCancel={() => context.emit('deleteMap', props.map?.id)} isShowCancel={!!props.map}>
       {
         props.map
           ? <div>
-            <div>
+            <div class={s.titleWrapper}>
+              <div class={s.title}>
+                {isEditingName.value
+                  ? <input value={editingName.value} onInput={handleInputEditingName}></input>
+                  : <div>{props.map.name || 'New Map'}</div>
+                }
+              </div>
               {isEditingName.value
-                ? <input value={editingName.value} onInput={handleInputEditingName}></input>
-                : <div>{props.map.name || 'Default Name'}</div>
-              }
-              {isEditingName.value
-                ? <div>
-                  <div onClick={() => handleFinishEditing(true)}>√</div>
-                  <div onClick={() => handleFinishEditing(false)}>×</div>
+                ? <div class={s.icon}>
+                  <div onClick={() => handleFinishEditing(true)}>
+                    <CorrectSVG width={20} height={20}/>
+                  </div>
+                  <div onClick={() => handleFinishEditing(false)}>
+                    <WrongSVG width={20} height={20}/>
+                  </div>
                 </div>
-                : <div onClick={handleStartEditing}>PENCIL ICON</div>}
+                : <div class={s.icon} onClick={handleStartEditing}>
+                  <EditSVG width={20} height={20}/>
+                </div>}
             </div>
-            <div>
+            <div class={s.playersWrapper}>
               {props.map.players.map((playerId) => <MAHelperAvatar
-                type='players'
+                type="players"
                 onClick={() => context.emit('clickPlayer', playerId)}
                 id={playerId}/>)}
               <MAHelperAvatar onClick={() => context.emit('addPlayer')}/>
             </div>
           </div>
-          : <div onClick={() => context.emit('addMap')}>+</div>
+          : <div class={s.addMap} onClick={() => context.emit('addMap')}>
+            <div class={s.addMapIcon}>
+              <PlusSVG width={32} height={32}/>
+            </div>
+            <div class={s.addMapText}>
+              Add New Map
+            </div>
+          </div>
       }
-    </div>
+    </Card>
   },
 })

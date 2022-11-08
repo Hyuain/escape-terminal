@@ -1,7 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import s from './ActionSheet.module.scss'
-import { IActionSheetItem } from '../../stores/actionSheet.interface'
-import { useActionSheet } from '../../stores/actionSheet'
+import { IActionSheetItem } from '@/stores/actionSheet.interface'
+import { useActionSheet } from '@/stores/actionSheet'
 
 export const ActionSheet = defineComponent({
   props: {
@@ -12,7 +12,7 @@ export const ActionSheet = defineComponent({
 
     return () => <div class={s.actionSheet}>
       {props.list?.map((item, index) => {
-        return <div onClick={() => actionSheet.closeActionSheet(index)}>{item.text}</div>
+        return <div class={s.actionItem} onClick={() => actionSheet.closeActionSheet(index)}>{item.text}</div>
       })}
     </div>
   },

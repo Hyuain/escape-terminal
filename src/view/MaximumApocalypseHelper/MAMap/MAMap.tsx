@@ -1,15 +1,16 @@
 import { defineComponent } from 'vue'
-import { PageWrapper } from '../../../components/PageWrapper/PageWrapper'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 import { MAHelperContent } from '../components/MAHelperContent/MAHelperContent'
 import { MAHelperNavBar } from '../components/MAHelperNavBar/MAHelperNavBar'
-import { Header } from '../../../components/Header/Header'
+import { Header } from '@/components/Header/Header'
 import { MAHelperNavBarLabel } from '../components/MAHelperNavBar/MAHelperNavBar.interface'
 import { useMADataStore } from '../tools/dataManager'
-import { useActionSheet } from '../../../stores/actionSheet'
-import { useModal } from '../../../stores/modal'
+import { useActionSheet } from '@/stores/actionSheet'
+import { useModal } from '@/stores/modal'
 import { IMap } from '../tools/dataManager.interface'
 import { MAMapCard } from './components/MAMapCard/MAMapCard'
 import { useRouter } from 'vue-router'
+import s from './MAMap.module.scss'
 
 export const MAMap = defineComponent({
   setup() {
@@ -29,24 +30,22 @@ export const MAMap = defineComponent({
         { text: 'Move Player' },
       ]).then((index) => {
         if (index === 0) {
-          console.log("xxxxPlayer", playerId)
+          console.log('xxxxPlayer', playerId)
           router.push({
-            path:'/ma_helper/player',
+            path: '/ma_helper/player',
             query: {
               id: playerId,
-            }
+            },
           })
         } else if (index === 1) {
           modal.showModal({
-            render: () => <div>
+            render: () => <div class={s.listModal}>
               {maDataWrapper.data.maps
                 .filter((item) => item.id !== map.id)
-                .map((item) => <div>
-                  <div onClick={() => handleMovePlayer(playerId, map.id, item.id)}>
-                    {item.name}
-                  </div>
-                  <div onClick={() => handleMovePlayer(playerId, map.id)}>Add New Map</div>
+                .map((item) => <div class={s.listModalItem} onClick={() => handleMovePlayer(playerId, map.id, item.id)}>
+                  {item.name}
                 </div>)}
+              <div class={s.listModalItem} onClick={() => handleMovePlayer(playerId, map.id)}>Add New Map</div>
             </div>,
           })
         }
@@ -56,9 +55,9 @@ export const MAMap = defineComponent({
     const handleAddPlayer = (map: IMap) => {
       const playersSetInThisMap = new Set(map.players)
       modal.showModal({
-        render: () => <div>
+        render: () => <div class={s.listModal}>
           {maDataWrapper.data.players.filter((player) => !playersSetInThisMap.has(player.id))
-            .map((player) => <div onClick={() => handleMovePlayer(player.id, undefined, map.id)}>
+            .map((player) => <div class={s.listModalItem} onClick={() => handleMovePlayer(player.id, undefined, map.id)}>
               {player.name}
             </div>)}
         </div>,
@@ -70,14 +69,34 @@ export const MAMap = defineComponent({
       modal.closeModal()
     }
 
+    const handleShowDeleteMapModal = (mapId: string) => {
+      console.log('showModal')
+      modal.showModal({
+        render: () => <div class={s.deleteMapModal}>
+          <div class={s.title}>Confirm Deletion?</div>
+          <div>* Players will not be removed from player list.</div>
+          <div class={s.buttons}>
+            <div onClick={() => handleDeleteMap(mapId)} class={[s.button, s.red]}>YES</div>
+            <div onClick={() => modal.closeModal()} class={s.button}>NO</div>
+          </div>
+        </div>,
+      })
+    }
+
+    const handleDeleteMap = (mapId: string) => {
+      dataStore.remove('maps', mapId)
+      modal.closeModal()
+    }
+
     return () => <PageWrapper>
-      <Header title="Maximum Apocalypse Helper"></Header>
+      <Header onClickBack={() => router.replace('/home')} title="Maximum Apocalypse Helper"></Header>
       <MAHelperContent>
         <div>
           {maDataWrapper.data.maps.map((map) => <MAMapCard
             map={map}
             onClickPlayer={(playerId) => handleClickPlayer(map, playerId)}
             onAddPlayer={() => handleAddPlayer(map)}
+            onDeleteMap={handleShowDeleteMapModal}
           />)}
           <MAMapCard onAddMap={handleAddMap}/>
         </div>

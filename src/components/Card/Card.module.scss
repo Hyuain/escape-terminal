@@ -1,0 +1,15 @@
+.card {
+  margin: 32px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: white;
+  position: relative;
+  .cancel-icon {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

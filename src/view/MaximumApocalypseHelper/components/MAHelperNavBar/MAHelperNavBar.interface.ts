@@ -5,7 +5,7 @@ export enum MAHelperNavBarLabel {
 }
 
 export interface IAction {
-  label: MAHelperNavBarLabel,
-  icon: string
+  label: MAHelperNavBarLabel
+  icon: any
   path: string
 }

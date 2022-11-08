@@ -1,6 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import { useMADataStore } from '../../tools/dataManager'
 import s from './MAHelperAvatar.module.scss'
+import PlusSVG from '../../../../assets/plus.svg'
 
 export const MAHelperAvatar = defineComponent({
   props: {
@@ -19,8 +20,8 @@ export const MAHelperAvatar = defineComponent({
       {
         props.id
           ? dataStore.getOne(props.type, props.id)?.name
-          : <div>+</div>
+          : <PlusSVG width={32} height={32} />
       }
     </div>
-  }
+  },
 })

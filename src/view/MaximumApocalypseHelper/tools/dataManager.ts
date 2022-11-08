@@ -161,9 +161,6 @@ export const useMADataStore = defineStore('ma_data', () => {
 
   const getDefaultMonsters = (): Promise<IMonster[]> => {
     return Promise.resolve([
-      { id: 'xxx1', name: 'm1', maxHp: 10, hp: 10, atk: 5 },
-      { id: 'xxx2', name: 'm2', maxHp: 10, hp: 10, atk: 6 },
-      { id: 'xxx3', name: 'm3', maxHp: 10, hp: 10, atk: 7 },
     ])
   }
 

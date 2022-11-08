@@ -5,6 +5,8 @@
   flex-direction: column;
   position: relative;
   background-color: #4C4B55;
+  font-family: Cairo, sans-serif;
+  color: #333;
 }
 .mask {
   position: absolute;
@@ -13,5 +15,5 @@
   right: 0;
   bottom: 0;
   z-index: 10;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, .4);
 }
