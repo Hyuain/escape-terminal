@@ -42,7 +42,12 @@ export const MAMapCard = defineComponent({
       editingName.value = e.target.value
     }
 
-    return () => <Card onClickCancel={() => context.emit('deleteMap', props.map?.id)} isShowCancel={!!props.map}>
+    return () => <Card
+      isShowCancel={!!props.map}
+      addNewItem={props.map ? undefined : { text: 'Add New Map' }}
+      onClickAdd={() => context.emit('addMap')}
+      onClickCancel={() => context.emit('deleteMap', props.map?.id)}
+    >
       {
         props.map
           ? <div>
@@ -74,14 +79,7 @@ export const MAMapCard = defineComponent({
               <MAHelperAvatar onClick={() => context.emit('addPlayer')}/>
             </div>
           </div>
-          : <div class={s.addMap} onClick={() => context.emit('addMap')}>
-            <div class={s.addMapIcon}>
-              <PlusSVG width={32} height={32}/>
-            </div>
-            <div class={s.addMapText}>
-              Add New Map
-            </div>
-          </div>
+          : null
       }
     </Card>
   },

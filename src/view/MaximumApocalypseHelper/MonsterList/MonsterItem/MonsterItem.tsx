@@ -17,6 +17,7 @@ export const MonsterItem = defineComponent({
     isSelected: Boolean,
     theme: {
       type: Number as PropType<MonsterItemTheme>,
+      default: MonsterItemTheme.MONSTER_LIST,
     },
   },
   emits: ['addMonster', 'clickMonster'],

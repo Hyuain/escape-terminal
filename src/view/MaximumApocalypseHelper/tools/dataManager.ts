@@ -126,6 +126,14 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
+  const removePlayer = (playerId: string) => {
+    remove('players', playerId)
+    MADataWrapper.data.maps.forEach((map) => {
+      map.players = (map.players || []).filter((id) => id !== playerId)
+    })
+    saveData()
+  }
+
   const attachMonster = (monsterId: string, playerId: string) => {
     const player = MADataWrapper.data.players.find((player) => player.id === playerId)
     if (!player) { return }
@@ -188,7 +196,7 @@ export const useMADataStore = defineStore('ma_data', () => {
   return {
     loadData,
     getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
-    movePlayer, attachMonster, detachMonster, destroyMonster,
+    movePlayer, removePlayer, attachMonster, detachMonster, destroyMonster,
     getMonsterAttachedPlayer, getPlayerPosition, getPlayersUsingMap,
   }
 })

@@ -70,16 +70,11 @@ export const MAMap = defineComponent({
     }
 
     const handleShowDeleteMapModal = (mapId: string) => {
-      console.log('showModal')
       modal.showModal({
-        render: () => <div class={s.deleteMapModal}>
-          <div class={s.title}>Confirm Deletion?</div>
-          <div>* Players will not be removed from player list.</div>
-          <div class={s.buttons}>
-            <div onClick={() => handleDeleteMap(mapId)} class={[s.button, s.red]}>YES</div>
-            <div onClick={() => modal.closeModal()} class={s.button}>NO</div>
-          </div>
-        </div>,
+        title: 'Confirm Deletion?',
+        content: '* Players will NOT be removed from player list.',
+        onConfirm: () => handleDeleteMap(mapId),
+        onCancel: () => modal.closeModal(),
       })
     }
 

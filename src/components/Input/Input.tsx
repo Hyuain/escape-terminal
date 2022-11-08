@@ -1,4 +1,4 @@
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, PropType } from 'vue'
 import s from './Input.module.scss'
 import { InputTheme } from './Input.interface'
 
@@ -7,8 +7,8 @@ export const Input = defineComponent({
     errorText: String,
     inputProps: Object,
     theme: {
+      type: Number as PropType<InputTheme>,
       default: InputTheme.DEFAULT,
-      type: Number,
     }
   },
   setup(props) {

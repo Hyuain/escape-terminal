@@ -1,15 +1,15 @@
 import { defineComponent } from 'vue'
-import { Header } from '../../../components/Header/Header'
+import { Header } from '@/components/Header/Header'
 import { MAHelperContent } from '../components/MAHelperContent/MAHelperContent'
 import { MAHelperNavBar } from '../components/MAHelperNavBar/MAHelperNavBar'
 import { MAHelperNavBarLabel } from '../components/MAHelperNavBar/MAHelperNavBar.interface'
-import { PageWrapper } from '../../../components/PageWrapper/PageWrapper'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 import { useMADataStore } from '../tools/dataManager'
-import { useModal } from '../../../stores/modal'
+import { useModal } from '@/stores/modal'
 import { PlayerItem } from './components/PlayerItem/PlayerItem'
 import { useRouter } from 'vue-router'
 import { IPlayer } from '../tools/dataManager.interface'
-import { useActionSheet } from '../../../stores/actionSheet'
+import { useActionSheet } from '@/stores/actionSheet'
 
 export const PlayerList = defineComponent({
   setup() {
@@ -26,6 +26,15 @@ export const PlayerList = defineComponent({
         query: {
           type: 'players',
         }
+      })
+    }
+
+    const handleClickPlayer = (player: IPlayer) => {
+      router.push({
+        path:'/ma_helper/player',
+        query: {
+          id: player.id,
+        },
       })
     }
 
@@ -62,6 +71,20 @@ export const PlayerList = defineComponent({
       })
     }
 
+    const handleShowDeletePlayerModal = (player: IPlayer) => {
+      modal.showModal({
+        title: 'Confirm Deletion?',
+        content: '* Monsters will NOT be removed from monster list.',
+        onConfirm: () => handleDeletePlayer(player.id),
+        onCancel: () => modal.closeModal(),
+      })
+    }
+
+    const handleDeletePlayer = (playerId: string) => {
+      dataStore.removePlayer(playerId)
+      modal.closeModal()
+    }
+
     const attachMonster = (monsterId: string, playerId: string) => {
       dataStore.attachMonster(monsterId, playerId)
       modal.closeModal()
@@ -73,6 +96,8 @@ export const PlayerList = defineComponent({
         {maDataWrapper.data.players.map((player) => <PlayerItem
           player={player}
           isShowMonsters
+          onClickPlayer={() => handleClickPlayer(player)}
+          onDeletePlayer={() => handleShowDeletePlayerModal(player)}
           onAddMonster={() => handleAddMonster(player)}
           onClickMonster={(monsterId) => handleClickMonster(monsterId, player.id)}
         />)}

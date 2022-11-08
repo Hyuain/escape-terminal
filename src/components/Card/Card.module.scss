@@ -13,3 +13,16 @@
     align-items: center;
   }
 }
+.add {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  .add-icon {
+  }
+  .add-text {
+    font-size: 16px;
+    line-height: 16px;
+  }
+}

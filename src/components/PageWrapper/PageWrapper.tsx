@@ -19,7 +19,7 @@ export const PageWrapper = defineComponent({
     return () => <div onScroll={(e) => context.emit('scroll', e)} style={{ height: `${window.innerHeight}px` }} class={s.pageWrapper}>
       {context.slots.default?.()}
       {
-        actionSheet.actionSheetData.list.length || modal.modalData.render
+        actionSheet.actionSheetData.list.length || modal.modalData.isShowModal
           ? <div onClick={handleClickMask} class={s.mask}></div>
           : <div></div>
       }
@@ -29,10 +29,8 @@ export const PageWrapper = defineComponent({
           : <div></div>
       }
       {
-        modal.modalData.render
-          ? <Modal>
-            {modal.modalData.render()}
-          </Modal>
+        modal.modalData.isShowModal
+          ? <Modal />
           : <div></div>
       }
     </div>

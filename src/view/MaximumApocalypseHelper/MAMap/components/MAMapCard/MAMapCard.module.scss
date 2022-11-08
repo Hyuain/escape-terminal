@@ -30,16 +30,3 @@
   flex-wrap: wrap;
   gap: 12px;
 }
-.add-map {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 4px;
-  .add-map-icon {
-  }
-  .add-map-text {
-    font-size: 16px;
-    line-height: 16px;
-  }
-}
