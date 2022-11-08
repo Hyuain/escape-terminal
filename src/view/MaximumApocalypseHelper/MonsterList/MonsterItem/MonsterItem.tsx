@@ -1,7 +1,10 @@
 import { defineComponent, PropType } from 'vue'
 import { IMonster } from '../../tools/dataManager.interface'
+import { Card } from '@/components/Card/Card'
 import s from './MonsterItem.module.scss'
 import { useMADataStore } from '../../tools/dataManager'
+import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
+import PlusSVG from '../../../../assets/plus.svg'
 
 export const MonsterItem = defineComponent({
   props: {
@@ -12,6 +15,9 @@ export const MonsterItem = defineComponent({
       type: Object as PropType<IMonster>,
     },
     isSelected: Boolean,
+    theme: {
+      type: Number as PropType<MonsterItemTheme>,
+    },
   },
   emits: ['addMonster', 'clickMonster'],
   setup(props, context) {
@@ -20,20 +26,24 @@ export const MonsterItem = defineComponent({
     const hostPlayer = dataStore.getMonsterAttachedPlayer(monster?.id)
     const hostPlayerMap = dataStore.getPlayerPosition(hostPlayer?.id)
     const allPlayers = dataStore.getPlayersUsingMap(hostPlayerMap?.id)
+    console.log('xxx', props.theme === MonsterItemTheme.PLAYER_DETAIL)
 
-    return () => <div
-      class={{ [`${s.item}`]: true, [`${s.selected}`]: props.isSelected }}
+    return () => <Card
+      class={{
+        [`${s.playerDetailWrapper}`]: props.theme === MonsterItemTheme.PLAYER_DETAIL,
+        [`${s.monsterListWrapper}`]: props.theme === MonsterItemTheme.MONSTER_LIST,
+        [`${s.wrapper}`]: true,
+        [`${s.selected}`]: props.isSelected,
+      }}
     >
       {monster
         ? <div onClick={() => context.emit('clickMonster')}>
-          <div>{monster.name}</div>
-          <div>HP: {monster.hp}/{monster.maxHp}</div>
-          <div>ATK: {monster.atk}</div>
-          <div>Host Player: {hostPlayer?.name}</div>
-          <div>Position: {hostPlayerMap?.name}</div>
-          <div>All Players: {allPlayers?.map((item) => <span>{item.name}</span>)}</div>
+          <div class={s.name}>{monster.name}</div>
+          <div>HP {monster.hp}/{monster.maxHp}, ATK {monster.atk}, @{hostPlayerMap?.name}</div>
         </div>
-        : <div onClick={() => context.emit('addMonster')}>+</div>}
-    </div>
+        : <div class={s.plusIcon} onClick={() => context.emit('addMonster')}>
+          <PlusSVG width={32} height={32} />
+        </div>}
+    </Card>
   },
 })

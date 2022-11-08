@@ -1,10 +1,16 @@
 import { defineComponent } from 'vue'
-import { PageWrapper } from '../../../components/PageWrapper/PageWrapper'
-import { Header } from '../../../components/Header/Header'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
+import { Header } from '@/components/Header/Header'
 import { useRoute, useRouter } from 'vue-router'
 import { useMADataStore } from '../tools/dataManager'
 import { MonsterItem } from '../MonsterList/MonsterItem/MonsterItem'
-import { useModal } from '../../../stores/modal'
+import { useModal } from '@/stores/modal'
+import { Card } from '@/components/Card/Card'
+import s from './Player.module.scss'
+import { Progress } from '@/components/Progress/Progress'
+import PlusSVG from '../../../assets/plus.svg'
+import MinusSVG from '../../../assets/minus.svg'
+import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
 
 export const Player = defineComponent({
   setup() {
@@ -21,7 +27,7 @@ export const Player = defineComponent({
         path: '/ma_helper/monster',
         query: {
           id: monsterId,
-        }
+        },
       })
     }
 
@@ -54,26 +60,35 @@ export const Player = defineComponent({
 
     return () => <PageWrapper>
       <Header title={player?.name || ''} onClickBack={() => router.back()}/>
-      {player
-        ? <div>
-          <div>{player.name}</div>
-          <div>
-            <div>HP: {player.hp}</div>
-            <div onClick={() => editPlayerHp(-1)}>-</div>
-            <div onClick={() => editPlayerHp(+1)}>+</div>
+      <Card class={s.card}>
+        {player
+          ? <div>
+            <div class={s.name}>{player.name}</div>
+            <div class={s.hpWrapper}>
+              <Progress percentage={(player.hp === undefined ? player.maxHp : player.hp) / player.maxHp}/>
+              <div class={s.hpText}>{player.hp}/{player.maxHp}</div>
+              <div class={s.hpIcons}>
+                <div onClick={() => editPlayerHp(-1)}>
+                  <PlusSVG width={32} height={32}/>
+                </div>
+                <div onClick={() => editPlayerHp(+1)}>
+                  <MinusSVG width={32} height={32}/>
+                </div>
+              </div>
+            </div>
+            <div class={s.monsterTitle}>Monster(s):</div>
+            <div>
+              {player.monsters?.map((monsterId) => <MonsterItem
+                theme={MonsterItemTheme.PLAYER_DETAIL}
+                onClickMonster={() => handleClickMonster(monsterId)}
+                monsterId={monsterId}
+              />)}
+              <MonsterItem theme={MonsterItemTheme.PLAYER_DETAIL} onAddMonster={() => handleAddMonster()}/>
+            </div>
           </div>
-          <div>MaxHp: {player.maxHp}</div>
-          <div>Monsters:</div>
-          <div>
-            {player.monsters?.map((monsterId) => <MonsterItem
-              onClickMonster={() => handleClickMonster(monsterId)}
-              monsterId={monsterId}
-            />)}
-            <MonsterItem onAddMonster={() => handleAddMonster()} />
-          </div>
-        </div>
-        : <div>No Data</div>
-      }
+          : <div>No Data</div>
+        }
+      </Card>
     </PageWrapper>
   },
 })

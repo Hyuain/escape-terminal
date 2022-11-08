@@ -1,6 +1,23 @@
-.item {
-  border: 1px solid black;
+.wrapper {
   &.selected {
     border: 1px solid red;
   }
+}
+.player-detail-wrapper {
+  margin: 12px 0;
+  border: 1px solid #4C4B55;
+  &:first-child {
+    margin-top: 6px;
+  }
+}
+.monster-list-wrapper {
+}
+.name {
+  font-size: 20px;
+  font-weight: 700;
+}
+.plus-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
