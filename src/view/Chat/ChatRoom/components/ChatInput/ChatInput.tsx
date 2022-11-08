@@ -14,12 +14,11 @@ export const ChatInput = defineComponent({
       inputRef.value.innerText = ''
     }
 
-    return () => <div>
+    return () => <div class={s.container}>
       <div class={s.textareaWrapper}>
         <div ref={inputRef} contenteditable onInput={handleInput} class={s.textarea} />
         <div onClick={handleClickSend} class={s.send}>Send</div>
       </div>
-      {/*<div>哈哈哈</div>*/}
     </div>
   },
 })

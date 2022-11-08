@@ -1,13 +1,14 @@
 import { defineComponent, nextTick, reactive, ref } from 'vue'
-import { PageWrapper } from '../../../components/PageWrapper/PageWrapper'
-import { Header } from '../../../components/Header/Header'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
+import { Header } from '@/components/Header/Header'
 import { BubbleList } from './components/BubbleList/BubbleList'
 import { ChatInput } from './components/ChatInput/ChatInput'
 import s from './ChatRoom.module.scss'
 import axios from 'axios'
 import { ChatType, IChat, IChatContent, IRawChat, ISocketData, SocketECommand, SocketType } from '../Chat.interface'
-import { assembleQuery } from '../../../shared/tools'
-import { hostConfig } from '../../../config/host.config'
+import { assembleQuery } from '@/shared/tools'
+import { hostConfig } from '@/config/host.config'
+import { useRouter } from 'vue-router'
 
 const BOTTOM_THRESHOLD = 100
 const TOP_THRESHOLD = 1
@@ -38,6 +39,8 @@ const connectSocket = (): WebSocket => {
 export const ChatRoom = defineComponent({
   setup() {
     const bubbleListRef = ref()
+    const router = useRouter()
+
     const isFetching = ref(false)
     const data = reactive<{
       messages: IChat[]
@@ -114,6 +117,7 @@ export const ChatRoom = defineComponent({
 
     getMessages().then((messages) => {
       data.messages = messages
+      scrollToBottom()
     })
 
     const scrollToPreviousPosition = () => {
@@ -138,7 +142,7 @@ export const ChatRoom = defineComponent({
     }
 
     return () => <PageWrapper>
-      <Header title={'Name'}></Header>
+      <Header onClickBack={() => router.replace('/home')} title={'Name'}></Header>
       <BubbleList ref={bubbleListRef} messages={data.messages} onScroll={handleScroll} class={s.bubbleList}></BubbleList>
       <ChatInput onSend={handleSendMessage}></ChatInput>
     </PageWrapper>

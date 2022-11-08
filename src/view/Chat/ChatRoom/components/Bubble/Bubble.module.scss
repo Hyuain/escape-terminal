@@ -2,20 +2,22 @@
   display: flex;
   gap: 12px;
   align-items: start;
+  font-family: 'Cairo', sans-serif;
   &.me {
     flex-direction: row-reverse;
   }
   .avatar {
     width: 64px;
     height: 64px;
-    border: 1px solid black;
+    background: white;
     overflow: hidden;
     border-radius: 8px;
   }
   .bubble {
-    border: 1px solid black;
+    background: white;
     border-radius: 8px;
     max-width: 60%;
-    padding: 4px 8px;
+    padding: 2px 8px;
+    min-height: calc(1em + 4px);
   }
 }
