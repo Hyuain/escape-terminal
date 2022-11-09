@@ -2,6 +2,7 @@ import { defineComponent, ref } from 'vue'
 import { RapidAPI } from '../../../apikey.private'
 import s from './Weather.module.scss'
 import { IWeather, IWeatherbitRes } from './Weather.interface'
+import axios from 'axios'
 
 const getLocation = (): Promise<GeolocationPosition> => {
   const Geolocation = navigator.geolocation
@@ -13,17 +14,9 @@ const getLocation = (): Promise<GeolocationPosition> => {
   })
 }
 
-const getWeather = (longitude: number, latitude: number): Promise<IWeatherbitRes> => {
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': RapidAPI.weatherbit.key,
-      'X-RapidAPI-Host': RapidAPI.weatherbit.host,
-    },
-  }
-  // const options = {}
-  return fetch(`https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=${longitude}&lat=${latitude}`, options)
-    .then(response => response.json())
+const getWeather = async (longitude: number, latitude: number): Promise<IWeatherbitRes> => {
+  const res = await axios.get(`/api/v1/externals/weather?lon=${longitude}&lat=${latitude}`)
+  return res.data
 }
 
 const getWeatherIcon = (code?: number) => {
