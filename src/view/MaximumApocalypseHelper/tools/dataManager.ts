@@ -98,8 +98,8 @@ export const useMADataStore = defineStore('ma_data', () => {
     return MADataWrapper
   }
 
-  const getOne = async <T extends keyof IStorageData>(key: T, id?: string): Promise<StorageDataType<T> | undefined> => {
-    await loadData()
+  const getOne = <T extends keyof IStorageData>(key: T, id?: string): StorageDataType<T> | undefined => {
+    // await loadData()
     return (MADataWrapper.data[key] as any).find((item: any) => item.id === id) as any
   }
 
