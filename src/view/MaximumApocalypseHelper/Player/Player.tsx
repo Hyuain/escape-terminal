@@ -12,6 +12,7 @@ import PlusSVG from '../../../assets/plus.svg'
 import MinusSVG from '../../../assets/minus.svg'
 import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
 import { MAHelperHp } from '@/view/MaximumApocalypseHelper/components/MAHelperHp/MAHelperHp'
+import { NoData } from '@/components/NoData/NoData'
 
 export const Player = defineComponent({
   setup() {
@@ -76,7 +77,7 @@ export const Player = defineComponent({
               <MonsterItem theme={MonsterItemTheme.PLAYER_DETAIL} onAddMonster={() => handleAddMonster()}/>
             </div>
           </div>
-          : <div>No Data</div>
+          : <NoData />
         }
       </Card>
     </PageWrapper>

@@ -23,10 +23,11 @@ export const PlayerItem = defineComponent({
       class={{
       [`${s.monsterDetailWrapper}`]: props.theme === PlayerItemTheme.MONSTER_DETAIL,
       [`${s.playerListWrapper}`]: props.theme === PlayerItemTheme.PLAYER_LIST,
+      [`${s.addPlayersWrapper}`]: props.theme === PlayerItemTheme.ADD_PLAYERS,
       [`${s.card}`]: true,
       [`${s.selected}`]: props.isSelected,
     }}
-      addNewItem={props.player ? undefined : { text: 'Add New Player' }}
+      addNewItem={props.player ? undefined : { text: 'Add Player' }}
       isShowCancel={!!props.player && props.theme === PlayerItemTheme.PLAYER_LIST}
       onClickAdd={() => context.emit('addPlayer')}
       onClickCancel={() => context.emit('deletePlayer')}

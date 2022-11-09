@@ -1,12 +1,20 @@
 import { defineComponent, reactive, ref } from 'vue'
-import { PageWrapper } from '../../../components/PageWrapper/PageWrapper'
-import { Header } from '../../../components/Header/Header'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
+import { Header } from '@/components/Header/Header'
 import { PlayerItem } from '../PlayerList/components/PlayerItem/PlayerItem'
 import { useMADataStore } from '../tools/dataManager'
 import { IMonster, IPlayer } from '../tools/dataManager.interface'
 import { useRoute, useRouter } from 'vue-router'
 import { AddPlayersOrMonstersPageType, SelectionType } from './AddPlayersOrMonsters.interface'
 import { MonsterItem } from '../MonsterList/MonsterItem/MonsterItem'
+import { Card } from '@/components/Card/Card'
+import SelectedSVG from '../../../assets/selected.svg'
+import UnselectedSVG from '../../../assets/unselected.svg'
+import s from './AddPlayers.module.scss'
+import { PlayerItemTheme } from '@/view/MaximumApocalypseHelper/PlayerList/components/PlayerItem/PlayerItem.interface'
+import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
+import { ScrollList } from '@/components/ScrollList/ScrollList'
+import { Bottom } from '@/components/Bottom/Bottom'
 
 export const AddPlayersOrMonsters = defineComponent({
   setup(props) {
@@ -53,13 +61,13 @@ export const AddPlayersOrMonsters = defineComponent({
 
     const validateNew = (): string => {
       if (!newItem.maxHp) {
-        return 'please enter maxHp'
+        return 'MaxHp is Required'
       }
       if (!newItem.name) {
-        return 'please enter name'
+        return 'Name is Required'
       }
       if (type === 'monsters' && !(newItem as any).atk) {
-        return 'please enter name'
+        return 'ATK is Required'
       }
       return ''
     }
@@ -84,40 +92,61 @@ export const AddPlayersOrMonsters = defineComponent({
         { key: 'atk', label: 'ATK' },
         { key: 'description', label: 'Description' }]
 
+    const getIcon = (selected: boolean) => {
+      return selected ? <SelectedSVG width={20} height={20} />
+        : <UnselectedSVG width={20} height={20} />
+    }
+
     return () => <PageWrapper>
-      <Header title="Add Players" onClickBack={() => router.back()}></Header>
-      <div onClick={() => handleChangeAddType('new')}>
-        {addType.value === 'new' ? '●' : '○'}
-        Add new {type === 'players' ? 'player' : 'monster'}
-      </div>
-      {addType.value === 'new'
-        ? <div>
-          {form.map((item) => <div>
-            <div>{item.label}</div>
-            <input onInput={(e) => handleInputProperty(e, item.key as any)}></input>
-          </div>)}
-        </div>
-        : null}
-      <div onClick={() => handleChangeAddType('exist')}>
-        {addType.value === 'exist' ? '●' : '○'}
-        Or select default players
-      </div>
-      {addType.value === 'exist'
-        ? defaultListRef.value.map((item) => {
-          return type === 'players'
-            ? <PlayerItem
-              isSelected={selectedIds.has(item.id)}
-              onClickPlayer={() => handleSelect(item.id)}
-              player={item}
-            />
-            : <MonsterItem
-              monster={item as IMonster}
-              isSelected={selectedIds.has(item.id)}
-              onClickMonster={() => handleSelect(item.id)}
-            />
-        })
-        : null}
-      <div onClick={handleConfirm}>Confirm!</div>
+      <Header title={`Add ${type === 'players' ? 'Players' : 'Monsters'}`} onClickBack={() => router.back()}></Header>
+      <ScrollList>
+        <Card class={s.card}>
+          <div class={s.title} onClick={() => handleChangeAddType('new')}>
+            <div class={s.titleIcon}>
+              {getIcon(addType.value === 'new')}
+            </div>
+            <div class={s.titleText}>
+              Add new {type === 'players' ? 'player' : 'monster'}
+            </div>
+          </div>
+          {addType.value === 'new'
+            ? <div>
+              {form.map((item) => <div>
+                <div class={s.titleIcon}>{item.label}</div>
+                <input class={s.input} onInput={(e) => handleInputProperty(e, item.key as any)}></input>
+              </div>)}
+            </div>
+            : null}
+        </Card>
+        <Card class={s.card}>
+          <div class={s.title} onClick={() => handleChangeAddType('exist')}>
+            <div class={s.titleIcon}>
+              {getIcon(addType.value === 'exist')}
+            </div>
+            <div class={s.titleText}>
+              Or select default {type}
+            </div>
+          </div>
+          {addType.value === 'exist'
+            ? defaultListRef.value.map((item) => {
+              return type === 'players'
+                ? <PlayerItem
+                  theme={PlayerItemTheme.ADD_PLAYERS}
+                  isSelected={selectedIds.has(item.id)}
+                  onClickPlayer={() => handleSelect(item.id)}
+                  player={item}
+                />
+                : <MonsterItem
+                  theme={MonsterItemTheme.ADD_MONSTERS}
+                  monster={item as IMonster}
+                  isSelected={selectedIds.has(item.id)}
+                  onClickMonster={() => handleSelect(item.id)}
+                />
+            })
+            : null}
+        </Card>
+      </ScrollList>
+      <Bottom onClick={handleConfirm} text='Confirm' />
     </PageWrapper>
   },
 })

@@ -1,0 +1,13 @@
+.bottom-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 8px 8px 0 0;
+  padding: 8px 8px;
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow: 0 -1px 4px #4C4B55;
+  z-index: 5;
+}

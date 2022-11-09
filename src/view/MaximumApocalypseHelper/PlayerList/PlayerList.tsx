@@ -98,7 +98,7 @@ export const PlayerList = defineComponent({
     }
 
     return () => <PageWrapper>
-      <Header title='Maximum Apocalypse Helper'></Header>
+      <Header onClickBack={() => router.replace('/home')} title='Maximum Apocalypse Helper'></Header>
       <MAHelperContent>
         {maDataWrapper.data.players.map((player) => <PlayerItem
           player={player}

@@ -98,8 +98,8 @@ export const useMADataStore = defineStore('ma_data', () => {
     return MADataWrapper
   }
 
-  // loadDataRisk
-  const getOne = <T extends keyof IStorageData>(key: T, id?: string): StorageDataType<T> | undefined => {
+  const getOne = async <T extends keyof IStorageData>(key: T, id?: string): Promise<StorageDataType<T> | undefined> => {
+    await loadData()
     return (MADataWrapper.data[key] as any).find((item: any) => item.id === id) as any
   }
 
@@ -164,11 +164,32 @@ export const useMADataStore = defineStore('ma_data', () => {
       { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
       { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
       { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
     ])
   }
 
   const getDefaultMonsters = (): Promise<IMonster[]> => {
     return Promise.resolve([
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
+      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
     ])
   }
 

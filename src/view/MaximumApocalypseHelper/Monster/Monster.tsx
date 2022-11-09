@@ -11,6 +11,7 @@ import { PlayerItemTheme } from '@/view/MaximumApocalypseHelper/PlayerList/compo
 import { NoData } from '@/components/NoData/NoData'
 import { NoDataTheme } from '@/components/NoData/NoData.interface'
 import { useModal } from '@/stores/modal'
+import { IMonster } from '@/view/MaximumApocalypseHelper/tools/dataManager.interface'
 
 export const Monster = defineComponent({
   setup() {

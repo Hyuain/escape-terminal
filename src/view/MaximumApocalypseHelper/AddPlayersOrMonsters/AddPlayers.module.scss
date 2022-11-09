@@ -1,0 +1,30 @@
+.card {
+  padding-bottom: 16px;
+  &:first-child {
+    margin-bottom: 0;
+  }
+}
+.title {
+  display: flex;
+  align-items: center;
+  .title-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+  }
+  .title-text {
+    font-size: 20px;
+  }
+}
+
+.label {
+
+}
+.input {
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 0 8px;
+  width: 100%;
+}
