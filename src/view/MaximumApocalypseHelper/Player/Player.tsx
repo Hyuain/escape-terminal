@@ -11,6 +11,7 @@ import { Progress } from '@/components/Progress/Progress'
 import PlusSVG from '../../../assets/plus.svg'
 import MinusSVG from '../../../assets/minus.svg'
 import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
+import { MAHelperHp } from '@/view/MaximumApocalypseHelper/components/MAHelperHp/MAHelperHp'
 
 export const Player = defineComponent({
   setup() {
@@ -64,18 +65,7 @@ export const Player = defineComponent({
         {player
           ? <div>
             <div class={s.name}>{player.name}</div>
-            <div class={s.hpWrapper}>
-              <Progress percentage={(player.hp === undefined ? player.maxHp : player.hp) / player.maxHp}/>
-              <div class={s.hpText}>{player.hp}/{player.maxHp}</div>
-              <div class={s.hpIcons}>
-                <div onClick={() => editPlayerHp(-1)}>
-                  <PlusSVG width={32} height={32}/>
-                </div>
-                <div onClick={() => editPlayerHp(+1)}>
-                  <MinusSVG width={32} height={32}/>
-                </div>
-              </div>
-            </div>
+            <MAHelperHp hp={player.hp} maxHp={player.maxHp} onEditHp={editPlayerHp} />
             <div class={s.monsterTitle}>Monster(s):</div>
             <div>
               {player.monsters?.map((monsterId) => <MonsterItem

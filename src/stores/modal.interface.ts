@@ -4,4 +4,6 @@ export interface IModalParams {
   content?: string
   onConfirm?: () => void
   onCancel?: () => void
+  list?: string[]
+  onClickListItem?: (index: number) => void
 }

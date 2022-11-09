@@ -54,27 +54,34 @@ export const PlayerList = defineComponent({
         } else if (index === 1) {
           dataStore.detachMonster(monsterId, playerId)
         } else if (index === 2) {
-          dataStore.destroyMonster(monsterId)
+          modal.showModal({
+            title: 'Confirm Action?',
+            content: `Monster will be killed, and be removed from the current monster list. This action can NOT be revoked!`,
+            onConfirm: () => {
+              dataStore.destroyMonster(monsterId)
+              modal.closeModal()
+            },
+            onCancel: () => {
+              modal.closeModal()
+            }
+          })
         }
       })
     }
 
     const handleAddMonster = (player: IPlayer) => {
       const monstersSetWithThisPlayer = new Set(player.monsters)
+      const monsters = maDataWrapper.data.monsters.filter((monster) => !monstersSetWithThisPlayer.has(monster.id))
       modal.showModal({
-        render: () => <div>
-          {maDataWrapper.data.monsters.filter((monster) => !monstersSetWithThisPlayer.has(monster.id))
-            .map((monster) => <div onClick={() => attachMonster(monster.id, player.id)}>
-              {monster.name}
-            </div>)}
-        </div>,
+        list: monsters.map((item) => item.name) as string[],
+        onClickListItem: (index) => attachMonster(monsters[index].id, player.id),
       })
     }
 
     const handleShowDeletePlayerModal = (player: IPlayer) => {
       modal.showModal({
         title: 'Confirm Deletion?',
-        content: '* Monsters will NOT be removed from monster list.',
+        content: '* Monsters will NOT be removed from the monster list.',
         onConfirm: () => handleDeletePlayer(player.id),
         onCancel: () => modal.closeModal(),
       })
@@ -95,7 +102,6 @@ export const PlayerList = defineComponent({
       <MAHelperContent>
         {maDataWrapper.data.players.map((player) => <PlayerItem
           player={player}
-          isShowMonsters
           onClickPlayer={() => handleClickPlayer(player)}
           onDeletePlayer={() => handleShowDeletePlayerModal(player)}
           onAddMonster={() => handleAddMonster(player)}

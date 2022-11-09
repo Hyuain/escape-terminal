@@ -10,6 +10,8 @@ export const useModal = defineStore('modal', () => {
     onCancel?: any
     title?: string
     content?: string
+    list?: string[]
+    onClickListItem?: any
   }>({
     isShowModal: false,
     render: null,
@@ -17,14 +19,20 @@ export const useModal = defineStore('modal', () => {
     onCancel: null,
     title: '',
     content: '',
+    list: undefined,
+    onClickListItem: null
   })
 
   const showModal = (params: IModalParams) => {
+    console.log('xxx2', modalData.onClickListItem)
     modalData.render = params.render
     modalData.title = params.title
     modalData.content = params.content
     modalData.onConfirm = params.onConfirm
     modalData.onCancel = params.onCancel
+    modalData.list = params.list
+    modalData.onClickListItem = params.onClickListItem
+    console.log('xxx3', modalData.onClickListItem)
     modalData.isShowModal = true
   }
 
@@ -34,6 +42,8 @@ export const useModal = defineStore('modal', () => {
     modalData.onCancel = null
     modalData.title = ''
     modalData.content = ''
+    modalData.list = undefined
+    modalData.onClickListItem = null
     modalData.isShowModal = false
   }
 

@@ -40,7 +40,7 @@ export const MonsterItem = defineComponent({
       {monster
         ? <div onClick={() => context.emit('clickMonster')}>
           <div class={s.name}>{monster.name}</div>
-          <div>HP {monster.hp}/{monster.maxHp}, ATK {monster.atk}, @{hostPlayerMap?.name}</div>
+          <div>HP {monster.hp}/{monster.maxHp}, ATK {monster.atk}, with {hostPlayer?.name}, @{hostPlayerMap?.name}</div>
         </div>
         : <div class={s.plusIcon} onClick={() => context.emit('addMonster')}>
           <PlusSVG width={32} height={32} />

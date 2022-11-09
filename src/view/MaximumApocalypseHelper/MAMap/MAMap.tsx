@@ -38,15 +38,10 @@ export const MAMap = defineComponent({
             },
           })
         } else if (index === 1) {
+          const maps = maDataWrapper.data.maps.filter((item) => item && item.id !== map.id)
           modal.showModal({
-            render: () => <div class={s.listModal}>
-              {maDataWrapper.data.maps
-                .filter((item) => item.id !== map.id)
-                .map((item) => <div class={s.listModalItem} onClick={() => handleMovePlayer(playerId, map.id, item.id)}>
-                  {item.name}
-                </div>)}
-              <div class={s.listModalItem} onClick={() => handleMovePlayer(playerId, map.id)}>Add New Map</div>
-            </div>,
+            list: maps.map((item) => item.name || 'New Map') as string[],
+            onClickListItem: (listIndex) => handleMovePlayer(playerId, map.id, maps[listIndex].id)
           })
         }
       })
@@ -54,13 +49,10 @@ export const MAMap = defineComponent({
 
     const handleAddPlayer = (map: IMap) => {
       const playersSetInThisMap = new Set(map.players)
+      const players = maDataWrapper.data.players.filter((player) => !playersSetInThisMap.has(player.id))
       modal.showModal({
-        render: () => <div class={s.listModal}>
-          {maDataWrapper.data.players.filter((player) => !playersSetInThisMap.has(player.id))
-            .map((player) => <div class={s.listModalItem} onClick={() => handleMovePlayer(player.id, undefined, map.id)}>
-              {player.name}
-            </div>)}
-        </div>,
+        list: players.map((item) => item.name) as string[],
+        onClickListItem: (index) => handleMovePlayer(players[index].id, undefined, map.id)
       })
     }
 
