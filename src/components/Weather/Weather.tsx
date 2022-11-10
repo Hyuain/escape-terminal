@@ -1,5 +1,4 @@
 import { defineComponent, ref } from 'vue'
-import { RapidAPI } from '../../../apikey.private'
 import s from './Weather.module.scss'
 import { IWeather, IWeatherbitRes } from './Weather.interface'
 import axios from 'axios'
