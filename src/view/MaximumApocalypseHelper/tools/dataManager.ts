@@ -159,38 +159,31 @@ export const useMADataStore = defineStore('ma_data', () => {
     saveData()
   }
 
-  const getDefaultPlayers = (): Promise<IPlayer[]> => {
-    return Promise.resolve([
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, monsters: [] },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, monsters: [] },
-    ])
+  const getDefaultPlayers = async (): Promise<IPlayer[]> => {
+    const res = await axios.get('/api/v1/default_players')
+    return res.data.map((item: any) => {
+      return {
+        id: `default_player-${item.id}`,
+        name: item.name,
+        hp: item.maxHp,
+        maxHp: item.maxHp,
+        description: item.description,
+      }
+    })
   }
 
-  const getDefaultMonsters = (): Promise<IMonster[]> => {
-    return Promise.resolve([
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx1', name: '1', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx2', name: '2', maxHp: 10, hp: 10, atk: 12 },
-      { id: 'xxx3', name: '3', maxHp: 10, hp: 10, atk: 12 },
-    ])
+  const getDefaultMonsters = async (): Promise<IMonster[]> => {
+    const res = await axios.get('/api/v1/default_monsters')
+    return res.data.map((item: any) => {
+      return {
+        id: `default_monster-${item.id}`,
+        name: item.name,
+        hp: item.maxHp,
+        maxHp: item.maxHp,
+        atk: item.atk,
+        description: item.description,
+      }
+    })
   }
 
   const getMonsterAttachedPlayer = (monsterId?: string): IPlayer | undefined => {

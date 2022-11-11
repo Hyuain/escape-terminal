@@ -10,7 +10,6 @@ import { useModal } from '@/stores/modal'
 import { IMap } from '../tools/dataManager.interface'
 import { MAMapCard } from './components/MAMapCard/MAMapCard'
 import { useRouter } from 'vue-router'
-import s from './MAMap.module.scss'
 
 export const MAMap = defineComponent({
   setup() {
@@ -76,7 +75,7 @@ export const MAMap = defineComponent({
     }
 
     return () => <PageWrapper>
-      <Header onClickBack={() => router.replace('/home')} title="Maximum Apocalypse Helper"></Header>
+      <Header onClickBack={() => router.replace('/home')} title="MA Helper"></Header>
       <MAHelperContent>
         <div>
           {maDataWrapper.data.maps.map((map) => <MAMapCard

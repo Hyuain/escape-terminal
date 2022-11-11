@@ -34,7 +34,7 @@ export const MonsterList = defineComponent({
     }
 
     return () => <PageWrapper>
-      <Header onClickBack={() => router.replace('/home')} title='Maximum Apocalypse Helper'></Header>
+      <Header onClickBack={() => router.replace('/home')} title='MA Helper'></Header>
       <MAHelperContent>
         {maDataWrapper.data.monsters.map((monster) => {
           return <MonsterItem onClickMonster={() => handleClickMonster(monster.id)} monster={monster} />

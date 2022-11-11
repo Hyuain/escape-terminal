@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router'
 
 const appList: IApp[] = [
   { name: 'Chat', icon: 'ICON', path: '/chat/room' },
-  { name: 'Maximum Apocalypse Helper', icon: 'ICON', 'path': '/ma_helper' },
+  { name: 'MA Helper', icon: 'ICON', 'path': '/ma_helper' },
 ]
 
 export const Home = defineComponent({
