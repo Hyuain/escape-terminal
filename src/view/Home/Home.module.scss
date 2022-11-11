@@ -8,11 +8,12 @@
   justify-content: space-between;
   flex-wrap: wrap;
   .app-card {
+    margin-top: 12px;
     display: flex;
     flex-wrap: wrap;
     .app {
       flex-shrink: 0;
-      margin: 8px 16px;
+      margin: 4px 8px;
     }
   }
   .widget-100 {

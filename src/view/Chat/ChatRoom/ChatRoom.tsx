@@ -9,6 +9,8 @@ import { ChatType, IChat, IChatContent, IRawChat, ISocketData, SocketECommand, S
 import { assembleQuery } from '@/shared/tools'
 import { hostConfig } from '@/config/host.config'
 import { useRouter } from 'vue-router'
+import { IRobot } from '@/view/Chat/ChatRoom/ChatRoom.interface'
+import { useUserStore } from '@/stores/user'
 
 const BOTTOM_THRESHOLD = 100
 const TOP_THRESHOLD = 1
@@ -36,18 +38,27 @@ const connectSocket = (): WebSocket => {
   return socket
 }
 
+const getRobotInfo = async () => {
+  const res = await axios.get('/api/v1/robots/1')
+  return res.data
+}
+
 export const ChatRoom = defineComponent({
   setup() {
     const bubbleListRef = ref()
     const router = useRouter()
+    const userStore = useUserStore()
 
+    userStore.getUser()
     const isFetching = ref(false)
     const data = reactive<{
       messages: IChat[]
       socket: WebSocket | null,
+      robotInfo: IRobot | null,
     }>({
       messages: [],
       socket: null,
+      robotInfo: null,
     })
 
     const getBubbleListScrollWrapper = () => {
@@ -120,9 +131,9 @@ export const ChatRoom = defineComponent({
       scrollToBottom()
     })
 
-    const scrollToPreviousPosition = () => {
-
-    }
+    getRobotInfo().then((robotInfo) => {
+      data.robotInfo = robotInfo
+    })
 
     const handleScroll = (e: any) => {
       const scrollTop = e.target.scrollTop
@@ -142,8 +153,23 @@ export const ChatRoom = defineComponent({
     }
 
     return () => <PageWrapper>
-      <Header onClickBack={() => router.replace('/home')} title={'Name'}></Header>
-      <BubbleList ref={bubbleListRef} messages={data.messages} onScroll={handleScroll} class={s.bubbleList}></BubbleList>
+      <Header onClickBack={() => router.replace('/home')} title={data.robotInfo?.name}></Header>
+      <BubbleList
+        ref={bubbleListRef}
+        messages={data.messages}
+        fromInfo={{
+          id: userStore.user.userId!,
+          avatar: userStore.user.avatar!,
+          name: userStore.user.nickname!,
+        }}
+        toInfo={{
+          id: data.robotInfo!.id,
+          avatar: data.robotInfo!.avatar,
+          name: data.robotInfo!.name,
+        }}
+        onScroll={handleScroll}
+        class={s.bubbleList}
+      />
       <ChatInput onSend={handleSendMessage}></ChatInput>
     </PageWrapper>
   }

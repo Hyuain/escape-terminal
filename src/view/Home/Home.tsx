@@ -27,11 +27,11 @@ export const Home = defineComponent({
       <Weather class={s.weatherCard}></Weather>
       <div class={s.appsContainer}>
         <div class={s.widget100}>
-          <div class={[s.widget50, s.cableWrapper]}>
+          <div class={[s.widget100, s.cableWrapper]}>
             <img class={[s.cable]} src='/cables.svg' />
           </div>
         </div>
-        <div class={s.widget50}>
+        <div class={s.widget100}>
           <FoodRecommendationCard />
         </div>
         <div class={[s.widget50, s.appCard]}>

@@ -3,14 +3,21 @@ import s from './Weather.module.scss'
 import { IWeather, IWeatherbitRes } from './Weather.interface'
 import axios from 'axios'
 
-const getLocation = (): Promise<GeolocationPosition> => {
-  const Geolocation = navigator.geolocation
-  return new Promise((resolve, reject) => {
-    Geolocation.getCurrentPosition(
-      (res) => resolve(res),
-      (err) => reject(err),
-    )
+// const getLocation = (): Promise<GeolocationPosition> => {
+const getLocation = (): Promise<any> => {
+  return Promise.resolve({
+    coords: {
+      longitude: 114.17935748324054,
+      latitude: 22.303446310055925,
+    },
   })
+  // const Geolocation = navigator.geolocation
+  // return new Promise((resolve, reject) => {
+  //   Geolocation.getCurrentPosition(
+  //     (res) => resolve(res),
+  //     (err) => reject(err),
+  //   )
+  // })
 }
 
 const getWeather = async (longitude: number, latitude: number): Promise<IWeatherbitRes> => {

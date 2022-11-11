@@ -1,7 +1,7 @@
 import { defineComponent, PropType, ref, defineExpose } from 'vue'
 import { Bubble } from '../Bubble/Bubble'
+import { IChat, IChatUserInfo } from '../../../Chat.interface'
 import s from './BubbleList.module.scss'
-import { IChat } from '../../../Chat.interface'
 
 export const BubbleList = defineComponent({
   props: {
@@ -9,13 +9,20 @@ export const BubbleList = defineComponent({
       type: Array as PropType<IChat[]>,
       default: [],
     },
+    fromInfo: Object as PropType<IChatUserInfo>,
+    toInfo: Object as PropType<IChatUserInfo>,
   },
   emits: ['scroll'],
   setup(props, context) {
-    return () => <div ref='wrapper' onScroll={(e) => context.emit('scroll', e)} class={s.list}>
+    return () => <div ref="wrapper" onScroll={(e) => context.emit('scroll', e)} class={s.list}>
       {props.messages.map((message) => {
-        return <Bubble message={message} class={s.bubble}></Bubble>
+        return <Bubble
+          class={s.bubble}
+          message={message}
+          fromInfo={props.fromInfo}
+          toInfo={props.toInfo}
+        />
       })}
     </div>
-  }
+  },
 })

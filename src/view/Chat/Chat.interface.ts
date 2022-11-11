@@ -26,6 +26,12 @@ export interface IChat {
   content: IChatContent
 }
 
+export interface IChatUserInfo {
+  id: number
+  avatar: string
+  name: string
+}
+
 export interface IRawChat extends Omit<IChat, 'content'> {
   content: string
 }
