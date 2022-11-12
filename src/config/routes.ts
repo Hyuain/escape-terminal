@@ -11,6 +11,7 @@ import { MAMap } from '@/view/MaximumApocalypseHelper/MAMap/MAMap'
 import { AddPlayersOrMonsters } from '@/view/MaximumApocalypseHelper/AddPlayersOrMonsters/AddPlayersOrMonsters'
 import component from '*.vue'
 import { Setting } from '@/view/Setting/Setting'
+import { Profile } from '@/view/Profile/Profile'
 
 export const routes: RouteRecordRaw[] = [
   { path: '/sign_in', component: SignIn },
@@ -37,6 +38,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/setting',
     component: Setting,
+  },
+  {
+    path: '/profile',
+    component: Profile,
   },
   { path: '/', component: Home },
 ]

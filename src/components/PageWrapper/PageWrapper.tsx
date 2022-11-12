@@ -1,8 +1,8 @@
 import { defineComponent, ref } from 'vue'
 import s from './PageWrapper.module.scss'
-import { useActionSheet } from '../../stores/actionSheet'
+import { useActionSheet } from '@/stores/actionSheet'
 import { ActionSheet } from '../ActionSheet/ActionSheet'
-import { useModal } from '../../stores/modal'
+import { useModal } from '@/stores/modal'
 import { Modal } from '../Modal/Modal'
 
 export const PageWrapper = defineComponent({

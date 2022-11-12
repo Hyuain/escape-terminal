@@ -49,7 +49,7 @@ export const ChatRoom = defineComponent({
     const router = useRouter()
     const userStore = useUserStore()
 
-    userStore.getUser()
+    userStore.getUser().then()
     const isFetching = ref(false)
     const data = reactive<{
       messages: IChat[]

@@ -1,0 +1,21 @@
+.card {
+  margin-bottom: 0;
+  .card-item {
+    font-size: 20px;
+    padding: 4px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:not(:first-child) {
+      border-top: 1px solid rgba(0, 0, 0, .1);
+    }
+    .text {
+      flex-grow: 1;
+    }
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

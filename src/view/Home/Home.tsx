@@ -1,23 +1,24 @@
 import s from './Home.module.scss'
 import { defineComponent } from 'vue'
-import { Weather } from '../../components/Weather/Weather'
-import { PageWrapper } from '../../components/PageWrapper/PageWrapper'
-import { AppIcon } from '../../components/AppIcon/AppIcon'
-import { FoodRecommendationCard } from '../../components/FoodRecommendationCard/FoodRecommendationCard'
-import { useUserStore } from '../../stores/user'
+import { Weather } from '@/components/Weather/Weather'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
+import { AppIcon } from '@/components/AppIcon/AppIcon'
+import { FoodRecommendationCard } from '@/components/FoodRecommendationCard/FoodRecommendationCard'
+import { useUserStore } from '@/stores/user'
 import { IApp } from './Home.interface'
 import { useRouter } from 'vue-router'
 
 const appList: IApp[] = [
   { name: 'Chat', icon: 'ICON', path: '/chat/room' },
   { name: 'MA Helper', icon: 'ICON', 'path': '/ma_helper' },
+  { name: 'Settings', icon: 'ICON', 'path': '/setting' },
 ]
 
 export const Home = defineComponent({
   setup() {
     const router = useRouter()
     const userStore = useUserStore()
-    userStore.getUser()
+    userStore.getUser().then()
 
     const handleClickApp = (app: IApp) => {
       router.push(app.path)
@@ -34,7 +35,7 @@ export const Home = defineComponent({
         <div class={s.widget100}>
           <FoodRecommendationCard />
         </div>
-        <div class={[s.widget50, s.appCard]}>
+        <div class={[s.widget100, s.appCard]}>
           {
             appList.map((app) => {
               return <AppIcon onClick={() => handleClickApp(app)} class={s.app} name={app.name}>

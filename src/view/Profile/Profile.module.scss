@@ -1,0 +1,74 @@
+.card {
+  padding: 32px 0;
+  .avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+      object-fit: cover;
+    }
+    .edit-avatar {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      bottom: 0;
+      left: calc(50% + 20px);
+      background-color: #333;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+    }
+  }
+  .name-wrapper {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 24px;
+    line-height: 24px;
+    .name {
+      margin-right: 8px;
+    }
+  }
+  .id-wrapper {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    line-height: 14px;
+    color: rgba(0, 0, 0, .3);
+  }
+  .form-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    padding: 14px 4px 0 4px;
+    margin: 20px 32px 0 32px;
+  }
+  .form-item {
+    display: flex;
+    position: relative;
+    font-size: 18px;
+    align-items: center;
+    margin-top: 10px;
+    .form-item-label {
+      font-weight: 700;
+    }
+    .form-item-content {
+      margin-left: 10px;
+      margin-right: 28px;
+    }
+    .form-item-icon {
+      color: rgba(0, 0, 0, .3);
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
