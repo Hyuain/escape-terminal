@@ -18,7 +18,7 @@ export const useActionSheet = defineStore('action_sheet', () => {
     actionSheetData.reject = reject
   }
 
-  const showActionSheet = (sheetList: IActionSheetItem[]) => {
+  const showActionSheet = (sheetList: IActionSheetItem[]): Promise<number> => {
     console.log('xxxSHowActionSheet', sheetList)
     actionSheetData.list = sheetList
     return new Promise((resolve, reject) => {

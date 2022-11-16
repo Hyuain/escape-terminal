@@ -48,3 +48,7 @@ export const onFileChosen = async (file: File) => {
   formData.append('file', file)
   return await axios.post(hostConfig.oss, formData)
 }
+
+export const generateRandomString = (length = 4) => {
+  return Math.random().toString(36).slice(2, 2 + length)
+}

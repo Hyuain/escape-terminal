@@ -30,6 +30,7 @@ export interface IMonster {
   maxHp: number
   atk: number
   description?: string
+  category?: string
 }
 
 export interface IMap {

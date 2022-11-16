@@ -15,27 +15,48 @@ import { PlayerItemTheme } from '@/view/MaximumApocalypseHelper/PlayerList/compo
 import { MonsterItemTheme } from '@/view/MaximumApocalypseHelper/MonsterList/MonsterItem/MonsterItem.interface'
 import { ScrollList } from '@/components/ScrollList/ScrollList'
 import { Bottom } from '@/components/Bottom/Bottom'
+import { generateRandomString } from '@/shared/tools'
+import { Select } from '@/components/Select/Select'
+import { ISelection } from '@/components/Select/Select.interface'
 
 export const AddPlayersOrMonsters = defineComponent({
   setup(props) {
 
     const dataStore = useMADataStore()
+    const dataWrapper = dataStore.getWrapper()
     const router = useRouter()
     const route = useRoute()
     const type: AddPlayersOrMonstersPageType = route.query.type as AddPlayersOrMonstersPageType
 
     const defaultListRef = ref<IPlayer[] | IMonster[]>([])
+    const monstersCategoriesRef = ref<ISelection[]>([])
     const addType = ref<SelectionType>('new')
     const selectedIds = reactive<Set<string>>(new Set())
     const newItem = reactive<IPlayer | IMonster>({} as any)
 
-    if (type === 'players') {
-      dataStore.getDefaultPlayers().then((players) => {
+    const refreshDefaultList = (category: string = '') => {
+      const promise = type === 'players'
+        ? dataStore.getDefaultPlayers()
+        : dataStore.getDefaultMonsters(category)
+      promise.then((players) => {
         defaultListRef.value = players
       })
-    } else {
-      dataStore.getDefaultMonsters().then((players) => {
-        defaultListRef.value = players
+    }
+
+    refreshDefaultList()
+
+    if (type === 'monsters') {
+      dataStore.getMonstersCategories().then((categories) => {
+        monstersCategoriesRef.value = [{
+          label: 'All',
+          key: '',
+        }].concat(categories.map((category) => {
+          return {
+            label: category,
+            key: category,
+          }
+        }))
+        dataWrapper.currentSelectionInAddMonstersDefaultMonsters = monstersCategoriesRef.value[0].key
       })
     }
 
@@ -78,7 +99,10 @@ export const AddPlayersOrMonsters = defineComponent({
         if (errMsg) { return alert(errMsg) }
         dataStore.add(type, { ...newItem })
       } else {
-        dataStore.addMany(type, (defaultListRef.value as any).filter((item: any) => selectedIds.has(item.id)))
+        const newItems = (defaultListRef.value as any)
+          .filter((item: any) => selectedIds.has(item.id))
+          .map((item: any) => ({ ...item, name: `${item.name}${generateRandomString(2)}` }))
+        dataStore.addMany(type, newItems)
       }
       router.back()
     }
@@ -93,8 +117,13 @@ export const AddPlayersOrMonsters = defineComponent({
         { key: 'description', label: 'Description' }]
 
     const getIcon = (selected: boolean) => {
-      return selected ? <SelectedSVG width={20} height={20} />
-        : <UnselectedSVG width={20} height={20} />
+      return selected ? <SelectedSVG width={20} height={20}/>
+        : <UnselectedSVG width={20} height={20}/>
+    }
+
+    const handleChangeDefaultMonstersCategory = (categoryKey: string) => {
+      dataWrapper.currentSelectionInAddMonstersDefaultMonsters = categoryKey
+      refreshDefaultList(categoryKey)
     }
 
     return () => <PageWrapper>
@@ -128,25 +157,38 @@ export const AddPlayersOrMonsters = defineComponent({
             </div>
           </div>
           {addType.value === 'exist'
-            ? defaultListRef.value.map((item) => {
-              return type === 'players'
-                ? <PlayerItem
-                  theme={PlayerItemTheme.ADD_PLAYERS}
-                  isSelected={selectedIds.has(item.id)}
-                  onClickPlayer={() => handleSelect(item.id)}
-                  player={item}
+            ? <div>
+              <div class={s.categoryWrapper}>
+                <div class={s.title}>Category:</div>
+                <Select
+                  class={s.select}
+                  selections={monstersCategoriesRef.value}
+                  selectedKey={dataWrapper.currentSelectionInAddMonstersDefaultMonsters}
+                  onSelect={handleChangeDefaultMonstersCategory}
                 />
-                : <MonsterItem
-                  theme={MonsterItemTheme.ADD_MONSTERS}
-                  monster={item as IMonster}
-                  isSelected={selectedIds.has(item.id)}
-                  onClickMonster={() => handleSelect(item.id)}
-                />
-            })
+              </div>
+              {defaultListRef.value.map((item) => {
+                return type === 'players'
+                  ? <PlayerItem
+                    key={item.id}
+                    theme={PlayerItemTheme.ADD_PLAYERS}
+                    isSelected={selectedIds.has(item.id)}
+                    onClickPlayer={() => handleSelect(item.id)}
+                    player={item}
+                  />
+                  : <MonsterItem
+                    key={item.id}
+                    theme={MonsterItemTheme.ADD_MONSTERS}
+                    monster={item as IMonster}
+                    isSelected={selectedIds.has(item.id)}
+                    onClickMonster={() => handleSelect(item.id)}
+                  />
+              })}
+            </div>
             : null}
         </Card>
       </ScrollList>
-      <Bottom onClick={handleConfirm} text='Confirm' />
+      <Bottom onClick={handleConfirm} text="Confirm"/>
     </PageWrapper>
   },
 })

@@ -28,3 +28,14 @@
   padding: 0 8px;
   width: 100%;
 }
+.category-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .title {
+
+  }
+  .select {
+    margin-left: 12px;
+  }
+}

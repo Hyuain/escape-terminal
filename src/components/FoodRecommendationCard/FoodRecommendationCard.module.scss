@@ -16,8 +16,6 @@
     border-radius: 6px;
     padding: 12px;
     .paragraph {
-      display: flex;
-      flex-direction: column;
       background: rgba(244, 244, 244, 0.83);
       border-radius: 8px;
       padding: 8px;
@@ -25,14 +23,23 @@
         margin-top: 16px;
       }
     }
+    .recommendation-paragraph {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .recommendation-text {
+    }
     .recommendation {
       color: #921212;
       text-decoration: underline;
+      margin: 0 4px;
     }
     .roll {
       height: 27px;
       width: 27px;
       align-self: center;
+      flex-shrink: 0;
     }
   }
 }

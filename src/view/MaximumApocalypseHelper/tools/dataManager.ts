@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { IMap, IMonster, IPlayer, IStorageData, IStorageDataExtra, StorageDataType } from './dataManager.interface'
-import { generateRandomId } from '../../../shared/tools'
+import { generateRandomId } from '@/shared/tools'
 import axios from 'axios'
 
 const StorageKey = 'MA_HELPER'
@@ -11,17 +11,20 @@ const getStorageData = (): IStorageData => {
 }
 
 const setStorageData = (data: IStorageDataExtra) => {
-  console.log('xxxSetStorageData', data)
   localStorage.setItem(StorageKey, JSON.stringify(data))
 }
 
 export const useMADataStore = defineStore('ma_data', () => {
-  const MADataWrapper = reactive<{ data: IStorageDataExtra }>({
+  const MADataWrapper = reactive<{
+    data: IStorageDataExtra,
+    currentSelectionInAddMonstersDefaultMonsters: string
+  }>({
     data: {
       players: [],
       monsters: [],
       maps: [],
     },
+    currentSelectionInAddMonstersDefaultMonsters: '',
   })
   const isDataLoaded = ref(false)
 
@@ -172,18 +175,24 @@ export const useMADataStore = defineStore('ma_data', () => {
     })
   }
 
-  const getDefaultMonsters = async (): Promise<IMonster[]> => {
-    const res = await axios.get('/api/v1/default_monsters')
+  const getDefaultMonsters = async (category: string = ''): Promise<IMonster[]> => {
+    const res = await axios.get(`/api/v1/default_monsters?category=${category}`)
     return res.data.map((item: any) => {
       return {
-        id: `default_monster-${item.id}`,
+        id: `default_monster-${item.id}-${Date.now()}-${Math.round((Math.random() * 1000))}`,
         name: item.name,
         hp: item.maxHp,
         maxHp: item.maxHp,
         atk: item.atk,
         description: item.description,
+        category: item.category,
       }
     })
+  }
+
+  const getMonstersCategories = async (): Promise<string[]> => {
+    const res = await axios.get('/api/v1/default_monsters/categories')
+    return res.data
   }
 
   const getMonsterAttachedPlayer = (monsterId?: string): IPlayer | undefined => {
@@ -209,7 +218,8 @@ export const useMADataStore = defineStore('ma_data', () => {
 
   return {
     loadData,
-    getDefaultPlayers, getDefaultMonsters, MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
+    getDefaultPlayers, getDefaultMonsters, getMonstersCategories,
+    MADataWrapper, add, addMany, remove, update, getWrapper, getOne,
     movePlayer, removePlayer, attachMonster, detachMonster, destroyMonster,
     getMonsterAttachedPlayer, getPlayerPosition, getPlayersUsingMap,
   }

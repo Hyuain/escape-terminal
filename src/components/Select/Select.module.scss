@@ -1,0 +1,26 @@
+.wrapper {
+  position: relative;
+  width: 100px;
+}
+.host {
+  border: 1px solid #333;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+  border-radius: 8px;
+}
+.selections {
+  .item {
+    &.selected {
+
+    }
+  }
+}
+.icon {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-44%);
+}
