@@ -158,15 +158,19 @@ export const AddPlayersOrMonsters = defineComponent({
           </div>
           {addType.value === 'exist'
             ? <div>
-              <div class={s.categoryWrapper}>
-                <div class={s.title}>Category:</div>
-                <Select
-                  class={s.select}
-                  selections={monstersCategoriesRef.value}
-                  selectedKey={dataWrapper.currentSelectionInAddMonstersDefaultMonsters}
-                  onSelect={handleChangeDefaultMonstersCategory}
-                />
-              </div>
+              {
+                type === 'monsters'
+                  ? <div class={s.categoryWrapper}>
+                    <div class={s.title}>Category:</div>
+                    <Select
+                      class={s.select}
+                      selections={monstersCategoriesRef.value}
+                      selectedKey={dataWrapper.currentSelectionInAddMonstersDefaultMonsters}
+                      onSelect={handleChangeDefaultMonstersCategory}
+                    />
+                  </div>
+                  : null
+              }
               {defaultListRef.value.map((item) => {
                 return type === 'players'
                   ? <PlayerItem
