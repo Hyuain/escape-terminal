@@ -10,20 +10,24 @@ import s from './Profile.module.scss'
 import { chooseAndUploadImage, getImageUrl, getOSSUploadParams } from '@/shared/tools'
 import EditSVG from '../../assets/edit.svg'
 import NextSVG from '../../assets/next.svg'
+import { useModal } from '@/stores/modal'
+import { Input } from '@/components/Input/Input'
 
 export const Profile = defineComponent({
   setup(props) {
     const route = useRoute()
     const router = useRouter()
     const userStore = useUserStore()
+    const modal = useModal()
     const info = reactive<Partial<IProfileInfo>>({})
-    const form = reactive<IProfileFormItem[]>([])
+    const formRef = ref<IProfileFormItem[]>([])
+    const newNameRef = ref<string>('')
     const id = route.query.id
     const isMe = !id
 
-    const initInfo = async () => {
+    const initInfo = async (forceRefresh?: boolean) => {
       if (isMe) {
-        const res = await userStore.getUser()
+        const res = await userStore.getUser(forceRefresh)
         info.id = res.userId
         info.name = res.nickname
         info.avatar = res.avatar
@@ -40,22 +44,43 @@ export const Profile = defineComponent({
 
     const initForm = () => {
       if (isMe) {
-        form.push(...[
+        formRef.value = [
           { key: 'email', label: 'Email', content: info.email, isEditable: false },
-        ])
-        console.log('xxxx', form)
+        ]
       }
     }
 
     initInfo().then()
 
     const uploadImage = () => {
-      chooseAndUploadImage().then()
+      chooseAndUploadImage().then(({ path }) => {
+        updateUserInfo({ avatar: path })
+      })
+    }
+
+    const updateUserInfo = (data: any) => {
+      axios.put('/api/v1/me', data).then(() => {
+        initInfo(true)
+      })
     }
 
     const handleClickImage = () => {
       if (!isMe) { return }
       uploadImage()
+    }
+
+    const handleClickName = () => {
+      modal.showModal({
+        title: 'Enter New Nickname',
+        contentRender: () => <input
+          placeholder={info.name} class={s.modalInput} value={newNameRef.value}
+          onInput={(e) => {newNameRef.value = (e.target as any).value}}/>,
+        onConfirm: () => {
+          updateUserInfo({ nickname: newNameRef.value })
+          modal.closeModal()
+        },
+        onCancel: () => modal.closeModal(),
+      })
     }
 
     return () => <PageWrapper>
@@ -67,7 +92,7 @@ export const Profile = defineComponent({
             <EditSVG width={16} height={16}/>
           </div> : null}
         </div>
-        <div class={s.nameWrapper}>
+        <div class={s.nameWrapper} onClick={handleClickName}>
           <div class={s.name}>{info.name}</div>
           {isMe ? <EditSVG width={16} height={16}/> : null}
         </div>
@@ -75,7 +100,7 @@ export const Profile = defineComponent({
           ID: {info.id}
         </div>
         <div class={s.formWrapper}>
-          {form.map((item) => {
+          {formRef.value.map((item) => {
             return <div class={s.formItem}>
               <div class={s.formItemLabel}>{item.label}</div>
               <div class={s.formItemContent}>{item.content}</div>

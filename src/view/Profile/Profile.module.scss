@@ -72,3 +72,13 @@
     }
   }
 }
+
+.modal-input {
+  font-size: 18px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 0 8px;
+  width: calc(100% - 32px);
+  margin: 12px 16px;
+}

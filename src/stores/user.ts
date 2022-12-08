@@ -13,8 +13,8 @@ export const useUserStore = defineStore('user', () => {
   })
   const router = useRouter()
 
-  const getUser = async () => {
-    if (user.userId) { return user }
+  const getUser = async (forceRefresh?: boolean) => {
+    if (user.userId && !forceRefresh) { return user }
     const res = await axios.get('/api/v1/me')
     const { data } = res
     user.userId = data.userId

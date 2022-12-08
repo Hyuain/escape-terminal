@@ -20,8 +20,8 @@ export const Modal = defineComponent({
                 : <NoData/>}
             </div>
             : <div>
-              <div class={s.title}>{modal.modalData.title}</div>
-              <div>{modal.modalData.content}</div>
+              <div class={s.title}>{modal.modalData.titleRender?.() || modal.modalData.title}</div>
+              <div>{modal.modalData.contentRender?.() || modal.modalData.content}</div>
               <div class={s.buttons}>
                 {modal.modalData.onConfirm
                   ? <div onClick={() => modal.modalData.onConfirm()} class={[s.button, s.red]}>YES</div>
