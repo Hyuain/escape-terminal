@@ -12,7 +12,7 @@ export const axiosConfig = () => {
 
   axios.interceptors.request.use((config) => {
     if (!config.url) { return config }
-    if (!skipAuthorizationUrls.has(config.url)) {
+    if (!skipAuthorizationUrls.has(config.url) && !config.headers?.Authorization) {
       const jwt = localStorage.getItem('jwt')
       config.headers!.Authorization = `Bearer ${jwt}`
     }

@@ -19,7 +19,12 @@ export const getImageUrl = (url: string): string => {
 }
 
 export const getOSSUploadParams = async () => {
-  const res = await axios.get('/api/v1/externals/get_oss_params')
+  const res = await axios.get('/api/v1/externals/get_oss_params', {
+    headers: {
+      'x-oss-date': new Date().toUTCString(),
+      'Content-Type': 'image/png',
+    }
+  })
   return res.data
 }
 
@@ -40,13 +45,25 @@ export const chooseAndUploadImage = (): Promise<any> => {
 }
 
 export const onFileChosen = async (file: File) => {
-  const ossForm = await getOSSUploadParams()
-  const formData = new FormData()
-  for (const [key, value] of Object.entries(ossForm)) {
-    formData.append(key, value as string)
+  const x = await getOSSUploadParams()
+  console.log('xxx', x)
+  const headers = {
+    'Authorization': x.authorization,
+    'x-oss-date': x.date,
+    'Content-Type': 'image/png',
   }
-  formData.append('file', file)
-  return await axios.post(hostConfig.oss, formData)
+  const res = await axios.put(
+    hostConfig.oss + x.path,
+    file,
+    { headers }
+  )
+  return res
+  // const formData = new FormData()
+  // for (const [key, value] of Object.entries(ossForm)) {
+  //   formData.append(key, value as string)
+  // }
+  // formData.append('file', file)
+  // return await axios.post(hostConfig.oss, formData)
 }
 
 export const generateRandomString = (length = 4) => {
