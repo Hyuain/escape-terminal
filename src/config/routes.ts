@@ -12,6 +12,9 @@ import { AddPlayersOrMonsters } from '@/view/MaximumApocalypseHelper/AddPlayersO
 import component from '*.vue'
 import { Setting } from '@/view/Setting/Setting'
 import { Profile } from '@/view/Profile/Profile'
+import { MemoBooks } from '@/view/Memo/MemoBooks/MemoBooks'
+import { MemoBook } from '@/view/Memo/MemoBook/MemoBook'
+import { SelectMemoBook } from '@/view/Memo/SelectMemoBook/SelectMemoBook'
 
 export const routes: RouteRecordRaw[] = [
   { path: '/sign_in', component: SignIn },
@@ -33,6 +36,14 @@ export const routes: RouteRecordRaw[] = [
       { path: 'monster_list', component: MonsterList },
       { path: 'map', component: MAMap },
       { path: '', component: MAMap }
+    ]
+  },
+  {
+    path: '/memo',
+    children: [
+      { path: 'book', component: MemoBook },
+      { path: 'books', component: MemoBooks },
+      { path: 'select_book', component: SelectMemoBook },
     ]
   },
   {
