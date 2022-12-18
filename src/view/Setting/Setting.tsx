@@ -18,16 +18,16 @@ export const Setting = defineComponent({
     const SETTINGS: Array<ISetting[]> = [
       [
         { name: 'Profile', path: '/profile' },
-        {
-          name: 'Language',
-          path: '',
-          callback: () => {
-            modal.showModal({
-              title: 'Coming Soon!',
-              content: 'Multiple languages are still in development...',
-            })
-          },
-        },
+        // {
+        //   name: 'Language',
+        //   path: '',
+        //   callback: () => {
+        //     modal.showModal({
+        //       title: 'Coming Soon!',
+        //       content: 'Multiple languages are still in development...',
+        //     })
+        //   },
+        // },
       ],
       [
         {
@@ -53,6 +53,7 @@ export const Setting = defineComponent({
       modal.showModal({
         title: 'Sign Out?',
         onConfirm: () => {
+          modal.closeModal()
           userStore.signOut()
         },
         onCancel: () => {

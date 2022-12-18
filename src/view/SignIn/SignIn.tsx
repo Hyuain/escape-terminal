@@ -1,13 +1,13 @@
 import { defineComponent, ref } from 'vue'
-import { Input } from '../../components/Input/Input'
-import { PageWrapper } from '../../components/PageWrapper/PageWrapper'
-import { InputTheme } from '../../components/Input/Input.interface'
+import { Input } from '@/components/Input/Input'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
+import { InputTheme } from '@/components/Input/Input.interface'
 import { useRouter } from 'vue-router'
 import s from './SignIn.module.scss'
 import { WelcomeStep } from './SignIn.interface'
-import { ValidationCode } from '../../components/ValidationCode/ValidationCode'
+import { ValidationCode } from '@/components/ValidationCode/ValidationCode'
 import axios from 'axios'
-import { useUserStore } from '../../stores/user'
+import { useUserStore } from '@/stores/user'
 
 const VALIDATION_CODE_DIGITS = 4
 
@@ -25,10 +25,26 @@ export const SignIn = defineComponent({
 
     const handleClickNext = () => {
       if (stepRef.value === WelcomeStep.ENTER_EMAIL) {
+        const error = getEmailError()
+        if (error) { return alert(error) }
         sendVerificationCode()
       } else if (stepRef.value === WelcomeStep.VALIDATION) {
+        const error = getValidationCodeError()
+        if (error) { return alert(error) }
         signIn()
       }
+    }
+
+    const getEmailError = () => {
+      return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formRef.value.email)
+        ? ''
+        : 'Please enter valid email address'
+    }
+
+    const getValidationCodeError = () => {
+      return formRef.value.validationCode.length === VALIDATION_CODE_DIGITS
+        ? ''
+        : `Please enter ${VALIDATION_CODE_DIGITS} digits validation code`
     }
 
     const handleInputValidationCode = (validationCodeArray: string[]) => {
@@ -58,6 +74,8 @@ export const SignIn = defineComponent({
         const jwt = res.data.jwt
         localStorage.setItem('jwt', jwt)
         router.replace('/home')
+      }).catch((e) => {
+        alert('Improper validation code')
       })
     }
 

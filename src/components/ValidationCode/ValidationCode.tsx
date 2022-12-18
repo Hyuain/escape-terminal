@@ -28,6 +28,15 @@ export const ValidationCode = defineComponent({
       context.emit('input', validationCodeRef.value)
     }
 
+    const handleKeydown = (e: KeyboardEvent, i: number) => {
+      if (e.key.toLowerCase() !== 'backspace') { return }
+      if (validationCodeRef.value[i]) { return }
+      if (i > 0) {
+        validationCodeRef.value[i - 1] = ''
+        inputRefs[i - 1].value.focus()
+      }
+    }
+
     return () => <div class={s.validationCodeWrapper}>
       {new Array(props.digits).fill(1).map((_, i) => {
         return <input
@@ -35,6 +44,7 @@ export const ValidationCode = defineComponent({
           type='number'
           value={validationCodeRef.value[i]}
           onInput={(e) => handleInputDigit(e as InputEvent, i)}
+          onKeydown={(e) => handleKeydown(e as KeyboardEvent, i)}
           class={s.digit} />
       })}
     </div>

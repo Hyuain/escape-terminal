@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router'
 const appList: IApp[] = [
   { name: 'Chat', icon: 'ICON', path: '/chat/room' },
   { name: 'MA Helper', icon: 'ICON', 'path': '/ma_helper' },
-  { name: 'Memo', icon: 'ICON', path: '/memo/books' },
+  // { name: 'Memo', icon: 'ICON', path: '/memo/books' },
   { name: 'Settings', icon: 'ICON', 'path': '/setting' },
 ]
 
