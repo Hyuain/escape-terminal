@@ -10,7 +10,7 @@ export const FoodRecommendationCard = defineComponent({
       return Math.floor(Math.random() * recommendationArray.length)
     }
 
-    const recommendationArray = ['Shredded Pork with Garlic Sauce', '红烧排骨', '水煮鱼', '小炒肉', '回锅肉', '鱼香肉丝']
+    const recommendationArray = ['Shredded Pork with Garlic Sauce', 'Braised Pork Ribs', 'Boiled Fish', 'Stir Fried Pork', 'Pasteurized pork', 'Shredded pork with fish sauce']
     const recommendationIndexRef = ref(getRandomIndex())
 
     const handleRoll = () => {
