@@ -9,5 +9,10 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      fetch("https://localhost:8888/api/v1/tests/connection").then((res) => {
+        console.log(res);
+      })
+    </script>
   </body>
 </html>
